@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тренерский состав — OCTAGON-FIT</title>
+  <style>
+    @font-face { font-family: 'Gunterz'; src: url('fonts/Gunterz-Medium.woff2') format('woff2'); font-weight: 500; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Regular.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Medium.woff2') format('woff2'); font-weight: 500; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Semibold.woff2') format('woff2'); font-weight: 600; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Bold.woff2') format('woff2'); font-weight: 700; }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; overflow-x: hidden; }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px) scale(0.97);
+      transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform, opacity;
+    }
+    [data-reveal].in-view { opacity: 1; transform: translateY(0) scale(1); }
+
+    :root {
+      --dark:    #181818;
+      --yellow:  #FED800;
+      --charcoal:#212121;
+      --mid:     #252525;
+      --gray:    #717171;
+    }
+
+    body {
+      font-family: 'SFPro', -apple-system, sans-serif;
+      background: var(--dark);
+      color: #fff;
+      width: 1920px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Шапка ── */
+    .tr-header {
+      width: 1920px;
+      padding: 40px 120px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 10;
+    }
+    .tr-logo { width: 180px; height: 99px; display: block; cursor: pointer; }
+    .tr-back {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 18px; color: rgba(255,255,255,0.6);
+      text-decoration: none; letter-spacing: -0.03em;
+      transition: color 0.25s ease;
+    }
+    .tr-back svg { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .tr-back:hover { color: #fff; }
+    .tr-back:hover svg { transform: translateX(-5px); }
+
+    /* ── Hero ── */
+    .tr-hero {
+      padding: 80px 120px 96px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 60px;
+    }
+    .tr-hero-left { flex: 1; }
+    .tr-hero-title {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 130px; letter-spacing: -0.07em; line-height: 0.88;
+      color: #fff; text-transform: uppercase;
+    }
+    .tr-hero-desc {
+      max-width: 560px;
+      font-size: 20px; color: rgba(255,255,255,0.45);
+      line-height: 1.65; letter-spacing: -0.02em;
+      margin-top: 32px;
+    }
+    /* ── Divider ── */
+    .tr-divider {
+      margin: 0 120px;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 80px;
+    }
+
+    /* ── Сетка тренеров ── */
+    .tr-grid {
+      padding: 0 120px 120px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* ── Карточка тренера ── */
+    .tc {
+      background: var(--mid);
+      border-radius: 28px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .tc:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 32px 64px rgba(0,0,0,0.45);
+    }
+
+    /* Фото */
+    .tc-photo-wrap {
+      position: relative;
+      overflow: hidden;
+      height: 420px;
+      flex-shrink: 0;
+    }
+    .tc-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+      transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tc:hover .tc-photo { transform: scale(1.03); }
+    .tc-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 50%, rgba(37,37,37,0.9) 100%);
+    }
+
+    /* Бейдж роли */
+    .tc-badge {
+      position: absolute;
+      top: 20px; left: 20px;
+      background: rgba(254,216,0,0.95);
+      color: var(--dark);
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Тело карточки */
+    .tc-body {
+      padding: 28px 28px 32px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .tc-exp {
+      font-family: 'SFPro', sans-serif;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.02em; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .tc-name {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 30px; letter-spacing: -0.05em; line-height: 1;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+
+    /* Разделитель перед специализацией */
+    .tc-sep {
+      width: 32px; height: 2px;
+      background: var(--yellow);
+      border-radius: 2px;
+      margin-bottom: 20px;
+    }
+
+    /* Список специализаций */
+    .tc-specs {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .tc-specs li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+    }
+    .tc-specs li::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    /* Доп. блок (образование / достижения) */
+    .tc-extra {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .tc-extra-label {
+      font-size: 11px; font-weight: 600;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .tc-extra-list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .tc-extra-list li {
+      display: flex; align-items: flex-start; gap: 8px;
+      font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.4;
+    }
+    .tc-extra-list li::before {
+      content: '—';
+      color: rgba(254,216,0,0.5);
+      flex-shrink: 0;
+    }
+
+    /* Кнопка */
+    .tc-btn {
+      display: block;
+      margin-top: 28px;
+      background: var(--yellow);
+      color: var(--charcoal);
+      border: none; border-radius: 100px;
+      padding: 16px 0;
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 17px; letter-spacing: -0.03em;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .tc-btn:hover { background: #ffe235; transform: scale(1.02); }
+    .tc-btn:active { transform: scale(0.98); }
+
+    /* ── CTA снизу ── */
+    .tr-cta {
+      background: var(--charcoal);
+      border-radius: 28px;
+      margin: 0 120px 120px;
+      padding: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 60px;
+    }
+    .tr-cta-text {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 64px; letter-spacing: -0.06em; line-height: 0.95;
+      color: #fff; text-transform: uppercase;
+    }
+    .tr-cta-text span { color: var(--yellow); }
+    .tr-cta-btn {
+      flex-shrink: 0;
+      background: var(--yellow); color: var(--charcoal);
+      border: none; border-radius: 100px;
+      padding: 28px 56px;
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 24px; letter-spacing: -0.03em;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .tr-cta-btn:hover { background: #ffe235; transform: scale(1.04); }
+    .tr-cta-btn:active { transform: scale(0.97); }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 60px 120px 80px;
+    }
+    .footer-logo { width: 314px; height: 173px; display: block; margin-bottom: 48px; }
+    .footer-logo-link { display: inline-block; }
+    .footer-bottom { display: flex; align-items: center; gap: 80px; }
+    .footer-addr {
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 32px; color: #fff; letter-spacing: -0.96px;
+      line-height: 1.35; white-space: nowrap; flex-shrink: 0;
+    }
+    .footer-nav { display: flex; gap: 60px; }
+    .footer-nav a, .footer-privacy {
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 32px; color: #fff; text-decoration: none;
+      letter-spacing: -0.96px; white-space: nowrap;
+      transition: opacity 0.2s ease;
+    }
+    .footer-nav a:hover, .footer-privacy:hover { opacity: 0.6; }
+    .footer-privacy { margin-left: auto; }
+    .footer-credit {
+      display: flex; align-items: center; gap: 14px;
+      margin-top: 48px; opacity: 0.38;
+      transition: opacity 0.25s ease;
+    }
+    .footer-credit:hover { opacity: 0.7; }
+    .footer-credit-text {
+      font-family: 'SFPro', sans-serif; font-weight: 400;
+      font-size: 20px; color: #fff; letter-spacing: -0.02em;
+    }
+    .footer-credit-logo { display: flex; align-items: center; text-decoration: none; }
+    .footer-credit-logo img { height: 20px; width: auto; }
+
+    /* ══════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════ */
+    @media (max-width: 1199px) {
+      body { width: 100% !important; overflow-x: hidden; max-width: 100vw; }
+      .tr-header, .tr-hero, .tr-divider, .tr-grid,
+      .tr-cta, .site-footer { width: 100% !important; }
+    }
+
+    /* ── Tablet ── */
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .tr-header { padding: 28px 36px 0; }
+      .tr-logo { width: 120px; height: 66px; }
+      .tr-back { font-size: 15px; }
+      .tr-hero { padding: 52px 36px 60px; flex-direction: column; gap: 0; align-items: flex-start; }
+      .tr-hero-title { font-size: 80px; }
+      .tr-hero-count { display: none; }
+      .tr-hero-desc { font-size: 17px; margin-top: 20px; }
+      .tr-divider { margin: 0 36px; margin-bottom: 52px; }
+      .tr-grid { padding: 0 36px 80px; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+      .tc-photo-wrap { height: 340px; }
+      .tc-name { font-size: 24px; }
+      .tc-specs li { font-size: 14px; }
+      .tr-cta { margin: 0 36px 80px; padding: 52px; flex-direction: column; gap: 36px; align-items: flex-start; }
+      .tr-cta-text { font-size: 44px; }
+      .tr-cta-btn { font-size: 18px; padding: 20px 40px; }
+      .site-footer { padding: 44px 36px 56px; }
+      .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
+      .footer-bottom { flex-wrap: wrap; gap: 20px; }
+      .footer-addr { font-size: 18px; }
+      .footer-nav { gap: 28px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-privacy { margin-left: 0; }
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 767px) {
+      .tr-header { padding: 18px 16px 0; }
+      .tr-logo { width: 90px; height: 50px; }
+      .tr-back { font-size: 14px; gap: 8px; }
+      .tr-back svg { width: 16px; height: 16px; }
+      .tr-hero { padding: 36px 16px 40px; flex-direction: column; gap: 0; align-items: flex-start; }
+      .tr-hero-title { font-size: 40px; }
+      .tr-hero-desc { font-size: 15px; margin-top: 16px; max-width: 100%; }
+      .tr-divider { margin: 0 16px; margin-bottom: 36px; }
+      .tr-grid { padding: 0 16px 60px; grid-template-columns: 1fr; gap: 14px; }
+      .tc { border-radius: 20px; }
+      .tc-photo-wrap { height: 300px; }
+      .tc-body { padding: 22px 22px 26px; }
+      .tc-name { font-size: 24px; margin-bottom: 16px; }
+      .tc-specs li { font-size: 14px; }
+      .tc-extra-list li { font-size: 12px; }
+      .tc-btn { font-size: 15px; padding: 14px 0; margin-top: 22px; }
+      .tr-cta { margin: 0 16px 60px; padding: 32px 24px; border-radius: 20px; flex-direction: column; gap: 24px; align-items: stretch; width: calc(100% - 32px) !important; box-sizing: border-box; }
+      .tr-cta-text { font-size: 28px; letter-spacing: -0.04em; }
+      .tr-cta-btn { font-size: 16px; padding: 16px 24px; text-align: center; width: 100%; justify-content: center; }
+      .site-footer { padding: 36px 16px 44px; }
+      .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; }
+      .footer-bottom { flex-direction: row; align-items: flex-end; gap: 8px; flex-wrap: nowrap; }
+      .footer-addr { font-size: 13px; white-space: normal; flex: 1; line-height: 1.6; }
+      .footer-nav { display: none; }
+      .footer-privacy { font-size: 13px; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-credit { margin-top: 20px; gap: 8px; }
+      .footer-credit-text { font-size: 13px; }
+      .footer-credit-logo img { height: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="tr-header">
+  <a href="index.html">
+    <img class="tr-logo" src="img/logo.svg" alt="OCTAGON-FIT">
+  </a>
+  <a class="tr-back" href="index.html">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M13 4L7 10L13 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    На главную
+  </a>
+</header>
+
+<section class="tr-hero">
+  <div class="tr-hero-left">
+    <h1 class="tr-hero-title" data-reveal>ТРЕНЕР&shy;СКИЙ СОСТАВ</h1>
+    <p class="tr-hero-desc" data-reveal data-delay="120">Каждый тренер — сертифицированный специалист с многолетним опытом. Подберём наставника под твою цель и уровень подготовки.</p>
+  </div>
+</section>
+
+<hr class="tr-divider">
+
+<div class="tr-grid">
+
+  <!-- Ежов Максим -->
+  <div class="tc" data-reveal data-delay="0">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-ezhov.webp" alt="Ежов Максим" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Старший тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 24 года</span>
+      <h2 class="tc-name">Ежов Максим</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Набор мышечной массы</li>
+        <li>Снижение процента жира</li>
+        <li>Коррекция фигуры</li>
+        <li>Рекомпозиция тела</li>
+        <li>Исправление осанки</li>
+        <li>Постановка техники упражнений</li>
+        <li>Индивидуальные программы тренировок и питания</li>
+        <li>Подготовка с учётом возраста и целей</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Александр Бучминский -->
+  <div class="tc" data-reveal data-delay="80">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-1.webp" alt="Александр Бучминский" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Персональный тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 7 лет</span>
+      <h2 class="tc-name">Александр Бучминский</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Набор мышечной массы</li>
+        <li>Укрепление мышц</li>
+        <li>Снижение жировой массы</li>
+        <li>Улучшение осанки</li>
+        <li>Рекомпозиция тела</li>
+        <li>Рекомендации по питанию</li>
+        <li>Индивидуальный подход</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Нененко Остап -->
+  <div class="tc" data-reveal data-delay="160">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-2.webp" alt="Нененко Остап" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Персональный тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 3 года</span>
+      <h2 class="tc-name">Нененко Остап</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Похудение и рекомпозиция тела</li>
+        <li>Коррекция питания</li>
+        <li>Составление программ тренировок</li>
+        <li>Подготовка для любого уровня</li>
+        <li>Обучение правильной технике</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Верба Дарья -->
+  <div class="tc" data-reveal data-delay="240">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-3-new.webp" alt="Верба Дарья" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Фитнес-тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 3 года</span>
+      <h2 class="tc-name">Верба Дарья</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Снижение веса</li>
+        <li>Коррекция фигуры</li>
+        <li>Набор мышечной массы</li>
+        <li>Постановка техники упражнений</li>
+        <li>Стретчинг</li>
+        <li>Работа с осанкой</li>
+        <li>Общая физическая подготовка</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Кириченко Валерия -->
+  <div class="tc" data-reveal data-delay="0">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-4-new.webp" alt="Кириченко Валерия" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Фитнес-тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 1 год</span>
+      <h2 class="tc-name">Кириченко Валерия</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Работа с ограничениями ОДА</li>
+        <li>Восстановление после родов</li>
+        <li>Исправление осанки</li>
+        <li>Работа с гиперлордозом и кифозом</li>
+        <li>Снижение веса</li>
+        <li>Набор мышечной массы</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Баранов Евгений -->
+  <div class="tc" data-reveal data-delay="80">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-baranov.webp" alt="Баранов Евгений" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Персональный тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 14 лет</span>
+      <h2 class="tc-name">Баранов Евгений</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Набор мышечной массы</li>
+        <li>Снижение веса</li>
+        <li>Коррекция фигуры</li>
+        <li>Силовой тренинг</li>
+      </ul>
+      <div class="tc-extra">
+        <p class="tc-extra-label">Достижения</p>
+        <ul class="tc-extra-list">
+          <li>Выступающий атлет IFBB</li>
+          <li>Пляжный бодибилдинг, атлетик, классик физик</li>
+          <li>Специалист ФКиС, БТФК (лёгкая атлетика)</li>
+        </ul>
+      </div>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Гунько Дарья -->
+  <div class="tc" data-reveal data-delay="160">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-gunko.webp" alt="Гунько Дарья" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Фитнес-тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 1 год</span>
+      <h2 class="tc-name">Гунько Дарья</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Снижение веса</li>
+        <li>Набор мышечной массы</li>
+        <li>Коррекция фигуры</li>
+        <li>Нутрициологическое сопровождение</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+  <!-- Пичуг Роман -->
+  <div class="tc" data-reveal data-delay="240">
+    <div class="tc-photo-wrap">
+      <img class="tc-photo" src="img/trainer-pichiuz.webp" alt="Пичуг Роман" loading="lazy">
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Персональный тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: 5 лет</span>
+      <h2 class="tc-name">Пичуг Роман</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Набор мышечной массы</li>
+        <li>Снижение веса</li>
+        <li>Коррекция фигуры</li>
+        <li>Постановка техники упражнений</li>
+        <li>Силовые тренировки</li>
+        <li>Функциональный тренинг</li>
+      </ul>
+      <a class="tc-btn" href="index.html#cta">Записаться</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- CTA -->
+<div class="tr-cta" data-reveal>
+  <p class="tr-cta-text">Не знаешь,<br>с кого <span>начать?</span></p>
+  <a class="tr-cta-btn" href="index.html#cta">Подберём тренера</a>
+</div>
+
+<footer class="site-footer">
+  <a class="footer-logo-link" href="index.html">
+    <img class="footer-logo" src="img/logo-footer.svg" alt="OCTAGON-FIT">
+  </a>
+  <div class="footer-bottom">
+    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00</div>
+    <nav class="footer-nav">
+      <a href="index.html#about">О нас</a>
+      <a href="index.html#trainers">Тренеры</a>
+      <a href="index.html#faq">Вопросы</a>
+      <a href="schedule.html">Расписание</a>
+    </nav>
+    <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+  </div>
+  <div class="footer-credit">
+    <span class="footer-credit-text">разработано</span>
+    <a class="footer-credit-logo" href="https://podpisait.ru/" target="_blank" rel="noopener">
+      <img src="img/podpisait.svg" alt="подписайт">
+    </a>
+  </div>
+</footer>
+
+<script>
+  (function() {
+    function applyZoom() {
+      if (window.innerWidth >= 1200) {
+        document.documentElement.style.zoom = window.innerWidth / 1920;
+      } else {
+        document.documentElement.style.zoom = '';
+      }
+    }
+    applyZoom();
+    window.addEventListener('resize', applyZoom);
+  })();
+
+  (function() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = el.dataset.delay ? parseInt(el.dataset.delay) : 0;
+          setTimeout(function() { el.classList.add('in-view'); }, delay);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(function(el) { observer.observe(el); });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "puppeteer": "^25.0.4"
+  },
+  "devDependencies": {
+    "dotenv": "^17.4.2",
+    "ssh2": "^1.17.0",
+    "ssh2-sftp-client": "^12.1.1"
+  }
+}

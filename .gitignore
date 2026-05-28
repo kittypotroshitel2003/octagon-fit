@@ -1,0 +1,9 @@
+node_modules/
+temporary screenshots/
+.DS_Store
+.env
+_env
+hero-bg-original.mp4
+admin-server.js
+admin.html
+.claude/

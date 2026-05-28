@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Блог — OCTAGON-FIT</title>
+  <style>
+    @font-face { font-family: 'Gunterz'; src: url('fonts/Gunterz-Medium.woff2') format('woff2'); font-weight: 500; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Regular.woff2') format('woff2'); font-weight: 400; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Medium.woff2') format('woff2'); font-weight: 500; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Semibold.woff2') format('woff2'); font-weight: 600; }
+    @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Bold.woff2') format('woff2'); font-weight: 700; }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(70px);
+      transition: opacity 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    [data-reveal].in-view { opacity: 1; transform: translateY(0); }
+
+    :root {
+      --dark:    #181818;
+      --yellow:  #FED800;
+      --charcoal:#212121;
+      --gray:    #717171;
+    }
+
+    body {
+      font-family: 'SFPro', -apple-system, sans-serif;
+      background: var(--dark);
+      color: #fff;
+      width: 1920px;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .bl-header {
+      width: 1920px;
+      padding: 40px 120px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .bl-logo { width: 180px; height: 99px; display: block; cursor: pointer; }
+    .bl-back {
+      display: flex; align-items: center; gap: 12px;
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 18px; color: rgba(255,255,255,0.6);
+      text-decoration: none; letter-spacing: -0.03em;
+      transition: color 0.25s ease;
+    }
+    .bl-back svg { transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .bl-back:hover { color: #fff; }
+    .bl-back:hover svg { transform: translateX(-5px); }
+
+    /* ── Hero ── */
+    .bl-hero {
+      padding: 80px 120px 72px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .bl-hero-left { flex: 1; }
+    .bl-hero-tag {
+      display: inline-block;
+      background: var(--yellow); color: var(--dark);
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .bl-hero-title {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 130px; letter-spacing: -0.07em; line-height: 0.88;
+      color: #fff; text-transform: uppercase;
+    }
+    .bl-hero-desc {
+      max-width: 520px;
+      font-size: 18px; color: rgba(255,255,255,0.45);
+      line-height: 1.65; letter-spacing: -0.02em;
+      margin-top: 28px;
+    }
+    .bl-count {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 100px; letter-spacing: -0.06em; line-height: 1;
+      color: rgba(255,255,255,0.06);
+      flex-shrink: 0;
+    }
+
+    /* ── Filter pills ── */
+    .bl-filters {
+      padding: 0 120px 56px;
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .bl-filter-btn {
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 15px; letter-spacing: -0.02em;
+      padding: 10px 24px; border-radius: 100px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: transparent; color: rgba(255,255,255,0.5);
+      cursor: pointer; transition: all 0.25s ease;
+    }
+    .bl-filter-btn:hover { border-color: rgba(255,255,255,0.35); color: #fff; }
+    .bl-filter-btn.active {
+      background: var(--yellow); border-color: var(--yellow);
+      color: var(--dark); font-weight: 700;
+    }
+
+    /* ── Divider ── */
+    .bl-divider {
+      margin: 0 120px;
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 64px;
+    }
+
+    /* ── Grid ── */
+    .bl-grid {
+      padding: 0 120px 120px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .bl-card {
+      background: #212121;
+      border-radius: 24px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.35s ease;
+    }
+    .bl-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 32px 64px rgba(0,0,0,0.5);
+    }
+    .bl-card-img-wrap { position: relative; overflow: hidden; }
+    .bl-card-img { width: 100%; height: 280px; object-fit: cover; display: block; transition: transform 0.5s ease; }
+    .bl-card:hover .bl-card-img { transform: scale(1.04); }
+    .bl-card-img-wrap::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(33,33,33,0.6) 0%, transparent 60%);
+    }
+    .bl-card-body { padding: 32px; }
+    .bl-card-tag {
+      display: inline-block;
+      background: var(--yellow); color: var(--dark);
+      font-family: 'Gunterz', sans-serif; font-size: 13px; letter-spacing: -0.2px;
+      padding: 7px 14px; border-radius: 100px; margin-bottom: 16px;
+    }
+    .bl-card-title {
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 20px; color: #fff; line-height: 1.35;
+      letter-spacing: -0.02em; margin-bottom: 16px;
+    }
+    .bl-card-meta {
+      display: flex; align-items: center; gap: 16px;
+    }
+    .bl-card-date { font-size: 13px; color: rgba(255,255,255,0.35); }
+    .bl-card-read {
+      font-size: 13px; color: rgba(255,255,255,0.25);
+      display: flex; align-items: center; gap: 5px;
+    }
+
+    /* ── Featured (first card big) ── */
+    .bl-card.featured {
+      grid-column: span 2;
+    }
+    .bl-card.featured .bl-card-img { height: 400px; }
+    .bl-card.featured .bl-card-title { font-size: 26px; }
+
+    /* ── Footer ── */
+    .bl-footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 40px 120px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .bl-footer-logo { width: 100px; opacity: 0.3; }
+    .bl-footer-copy { font-size: 14px; color: rgba(255,255,255,0.25); letter-spacing: -0.02em; }
+
+    /* ── Footer ── */
+    .site-footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(255,255,255,0.12);
+      padding: 60px 120px 80px;
+    }
+    .footer-logo { width: 314px; height: 173px; display: block; margin-bottom: 48px; }
+    .footer-logo-link { display: inline-block; }
+    .footer-bottom { display: flex; align-items: center; gap: 80px; }
+    .footer-addr {
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 32px; color: #fff; letter-spacing: -0.96px;
+      line-height: 1.35; white-space: nowrap; flex-shrink: 0;
+    }
+    .footer-nav { display: flex; gap: 60px; }
+    .footer-nav a, .footer-privacy {
+      font-family: 'SFPro', sans-serif; font-weight: 500;
+      font-size: 32px; color: #fff; text-decoration: none;
+      letter-spacing: -0.96px; white-space: nowrap;
+      transition: opacity 0.2s ease;
+    }
+    .footer-nav a:hover, .footer-privacy:hover { opacity: 0.6; }
+    .footer-privacy { margin-left: auto; }
+    .footer-credit {
+      display: flex; align-items: center; gap: 14px;
+      margin-top: 48px; opacity: 0.38;
+      transition: opacity 0.25s ease;
+    }
+    .footer-credit:hover { opacity: 0.7; }
+    .footer-credit-text {
+      font-family: 'SFPro', sans-serif; font-weight: 400;
+      font-size: 20px; color: #fff; letter-spacing: -0.02em;
+    }
+    .footer-credit-logo { display: flex; align-items: center; text-decoration: none; }
+    .footer-credit-logo img { height: 20px; width: auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1199px) {
+      body { width: 100% !important; overflow-x: clip; }
+      .bl-header, .bl-hero, .bl-filters, .bl-grid, .bl-footer, .bl-divider { width: 100% !important; }
+    }
+
+    @media (min-width: 768px) and (max-width: 1199px) {
+      .bl-header { padding: 28px 36px 0; }
+      .bl-logo { width: 120px; height: 66px; }
+      .bl-back { font-size: 15px; }
+      .bl-hero { padding: 52px 36px 52px; }
+      .bl-hero-title { font-size: 80px; }
+      .bl-count { font-size: 60px; }
+      .bl-filters { padding: 0 36px 40px; }
+      .bl-divider { margin: 0 36px; margin-bottom: 48px; }
+      .bl-grid { padding: 0 36px 80px; grid-template-columns: repeat(2, 1fr); }
+      .bl-card.featured { grid-column: span 2; }
+      .site-footer { padding: 44px 36px 56px; }
+      .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
+      .footer-bottom { flex-wrap: wrap; gap: 20px; }
+      .footer-addr { font-size: 18px; }
+      .footer-nav { gap: 28px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-privacy { margin-left: 0; }
+    }
+
+    @media (max-width: 767px) {
+      .bl-header { padding: 20px 16px 0; }
+      .bl-logo { width: 90px; height: 50px; }
+      .bl-back { font-size: 14px; }
+      .bl-hero { padding: 36px 16px 36px; flex-direction: column; gap: 0; }
+      .bl-hero-title { font-size: 52px; }
+      .bl-count { display: none; }
+      .bl-hero-desc { font-size: 15px; }
+      .bl-filters { padding: 0 16px 28px; }
+      .bl-divider { margin: 0 16px; margin-bottom: 32px; }
+      .bl-grid { padding: 0 16px 60px; grid-template-columns: 1fr; gap: 16px; }
+      .bl-card.featured { grid-column: span 1; }
+      .bl-card.featured .bl-card-img { height: 240px; }
+      .bl-card-img { height: 220px; }
+      .site-footer { padding: 36px 16px 44px; }
+      .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; }
+      .footer-bottom { flex-direction: row; align-items: flex-end; gap: 8px; flex-wrap: nowrap; }
+      .footer-addr { font-size: 13px; white-space: normal; flex: 1; line-height: 1.6; }
+      .footer-nav { display: none; }
+      .footer-privacy { font-size: 13px; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-credit { margin-top: 20px; gap: 8px; }
+      .footer-credit-text { font-size: 13px; }
+      .footer-credit-logo img { height: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="bl-header">
+  <a href="index.html"><img class="bl-logo" src="img/logo.svg" alt="OCTAGON-FIT"></a>
+  <a href="index.html" class="bl-back">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path d="M12 4l-6 6 6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    На главную
+  </a>
+</header>
+
+<section class="bl-hero">
+  <div class="bl-hero-left">
+    <span class="bl-hero-tag" data-reveal>OCTAGON-FIT</span>
+    <h1 class="bl-hero-title" data-reveal data-delay="80">БЛОГ</h1>
+    <p class="bl-hero-desc" data-reveal data-delay="180">Полезные статьи о тренировках, питании и восстановлении от тренеров нашего клуба.</p>
+  </div>
+</section>
+
+<div class="bl-filters" data-reveal>
+  <button class="bl-filter-btn active" onclick="filterBlog(this,'all')">Все</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Новичкам')">Новичкам</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Питание')">Питание</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Восстановление')">Восстановление</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Тренировки')">Тренировки</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Мотивация')">Мотивация</button>
+</div>
+
+<hr class="bl-divider">
+
+<div class="bl-grid" id="blogGrid">
+  <a href="blog-1.html" class="bl-card featured" data-cat="Новичкам" data-reveal data-delay="0">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/hero-training.webp" alt="Начни тренироваться">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Новичкам</span>
+      <p class="bl-card-title">Как начать тренироваться и не бросить через неделю</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">12 мая 2025</span>
+        <span class="bl-card-read">· 6 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="blog-2.html" class="bl-card" data-cat="Питание" data-reveal data-delay="80">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/hero-nutrition.webp" alt="Питание для роста мышц">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Питание</span>
+      <p class="bl-card-title">Что есть до и после тренировки: простые правила без диет</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">3 мая 2025</span>
+        <span class="bl-card-read">· 5 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="blog-3.html" class="bl-card" data-cat="Восстановление" data-reveal data-delay="160">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/hero-recovery.webp" alt="Восстановление после тренировок">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Восстановление</span>
+      <p class="bl-card-title">Сауна, растяжка и сон: почему восстановление важнее самой тренировки</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">24 апреля 2025</span>
+        <span class="bl-card-read">· 7 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="#" class="bl-card" data-cat="Тренировки" data-reveal data-delay="240">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/card-blog1.webp" alt="Кроссфит vs тренажёрный зал">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Тренировки</span>
+      <p class="bl-card-title">Кроссфит vs тренажёрный зал: что выбрать и зачем совмещать</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">15 апреля 2025</span>
+        <span class="bl-card-read">· 5 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="#" class="bl-card" data-cat="Мотивация" data-reveal data-delay="320">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/card-blog2.webp" alt="Как сохранить мотивацию">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Мотивация</span>
+      <p class="bl-card-title">10 способов сохранить мотивацию, когда совсем не хочется в зал</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">7 апреля 2025</span>
+        <span class="bl-card-read">· 4 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="#" class="bl-card" data-cat="Питание" data-reveal data-delay="400">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/card-blog3.webp" alt="Протеин и добавки">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Питание</span>
+      <p class="bl-card-title">Нужен ли протеин новичку? Честный ответ без рекламы</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">28 марта 2025</span>
+        <span class="bl-card-read">· 6 мин чтения</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<footer class="site-footer">
+  <a class="footer-logo-link" href="index.html">
+    <img class="footer-logo" src="img/logo-footer.svg" alt="OCTAGON-FIT">
+  </a>
+  <div class="footer-bottom">
+    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00</div>
+    <nav class="footer-nav">
+      <a href="index.html#about">О нас</a>
+      <a href="index.html#trainers">Тренеры</a>
+      <a href="index.html#faq">Вопросы</a>
+      <a href="schedule.html">Расписание</a>
+    </nav>
+    <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+  </div>
+  <div class="footer-credit">
+    <span class="footer-credit-text">разработано</span>
+    <a class="footer-credit-logo" href="https://podpisait.ru/" target="_blank" rel="noopener">
+      <img src="img/podpisait.svg" alt="подписайт">
+    </a>
+  </div>
+</footer>
+
+<script>
+  // Desktop zoom scaling
+  (function() {
+    function applyZoom() {
+      if (window.innerWidth >= 1200) {
+        document.documentElement.style.zoom = window.innerWidth / 1920;
+      } else {
+        document.documentElement.style.zoom = '';
+      }
+    }
+    applyZoom();
+    window.addEventListener('resize', applyZoom);
+  })();
+
+  // Анимации появления при скролле
+  (function() {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var el = entry.target;
+          var delay = el.dataset.delay ? parseInt(el.dataset.delay) : 0;
+          setTimeout(function() { el.classList.add('in-view'); }, delay);
+          observer.unobserve(el);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('[data-reveal]').forEach(function(el) { observer.observe(el); });
+  })();
+
+  function filterBlog(btn, cat) {
+    document.querySelectorAll('.bl-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#blogGrid .bl-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
