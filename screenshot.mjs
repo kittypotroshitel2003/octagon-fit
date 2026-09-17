@@ -17,14 +17,13 @@ const filename = `screenshot-${next}${label}.png`;
 const filepath = path.join(dir, filename);
 
 const require = createRequire(import.meta.url);
-const puppeteer = require('/tmp/ss-helper/node_modules/puppeteer');
+const puppeteer = require('puppeteer');
 
-const chromePath = `${process.env.HOME}/.cache/puppeteer/chrome/mac_arm-147.0.7727.57/chrome-mac-arm64/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing`;
-
+/* headless shell: обычный headless Chrome в этом окружении подвисает на captureScreenshot */
 const browser = await puppeteer.launch({
-  executablePath: chromePath,
-  headless: 'new',
-  args: ['--no-sandbox', '--disable-setuid-sandbox']
+  headless: 'shell',
+  protocolTimeout: 120000,
+  args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars']
 });
 const page = await browser.newPage();
 await page.setViewport({ width: 1920, height: 1080 });

@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Расписание — OCTAGON-FIT</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#181818">
+  <script defer src="assets/analytics.js"></script>
   <style>
     @font-face {
       font-family: 'Gunterz';
@@ -283,6 +289,41 @@
     .sch-legend-dot.dark { background: var(--charcoal); border: 1px solid rgba(255,255,255,0.15); }
     .sch-legend-dot.yellow { background: var(--yellow); }
 
+    /* Правила записи на групповые */
+    .sch-rules {
+      margin: 0 120px 48px;
+      padding: 28px 32px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .sch-rules-title {
+      margin: 0 0 14px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .sch-rules-list {
+      margin: 0;
+      padding: 0 0 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 15px;
+      line-height: 1.55;
+      color: rgba(255,255,255,0.72);
+    }
+    .sch-rules-note {
+      margin: 16px 0 0;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.55);
+    }
+    .sch-class-star { color: var(--yellow); }
+
     /* ── Планшет (768–1199px) ── */
     @media (min-width: 768px) and (max-width: 1199px) {
       .cookie-banner { padding: 20px 36px; gap: 16px; flex-direction: column; align-items: flex-start; }
@@ -302,6 +343,7 @@
       .sch-filters { padding: 0 36px 32px; flex-wrap: wrap; gap: 8px; }
       .sch-filter-btn { padding: 9px 20px; font-size: 14px; }
       .sch-legend { padding: 0 36px 32px; flex-wrap: wrap; gap: 20px; }
+      .sch-rules { margin: 0 36px 36px; padding: 24px; }
       .sch-table-wrap { padding: 0 36px 80px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .sch-table { min-width: 700px; }
       .sch-table thead th { font-size: 13px; padding-bottom: 14px; }
@@ -375,6 +417,9 @@
       .sch-filters { padding: 0 20px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
       .sch-filter-btn { padding: 8px 16px; font-size: 13px; white-space: nowrap; }
       .sch-legend { padding: 0 20px 20px; gap: 12px; flex-wrap: wrap; }
+      .sch-rules { margin: 0 20px 28px; padding: 20px; }
+      .sch-rules-title { font-size: 16px; }
+      .sch-rules-list { font-size: 14px; }
       .sch-legend-label { width: 100%; }
       .sch-table-wrap { padding: 0 20px 56px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .sch-table { min-width: 560px; }
@@ -417,8 +462,8 @@
     </div>
     <div class="sch-divider"></div>
     <div class="sch-meta-item">
-      <span class="sch-meta-label">Запись по телефону</span>
-      <span class="sch-meta-value"><a href="tel:+79186887397">8-918-688-73-97</a></span>
+      <span class="sch-meta-label">Запись только в Telegram или MAX</span>
+      <span class="sch-meta-value"><a href="https://t.me/+79186887397" target="_blank" rel="noopener">8-918-688-73-97</a></span>
     </div>
     <div class="sch-divider"></div>
     <div class="sch-meta-item">
@@ -443,12 +488,22 @@
   <span class="sch-legend-label">Обозначения:</span>
   <div class="sch-legend-item">
     <div class="sch-legend-dot dark"></div>
-    Групповое занятие
+    Входит в абонемент
   </div>
   <div class="sch-legend-item">
     <div class="sch-legend-dot yellow"></div>
-    Персональная тренировка
+    Оплачивается отдельно
   </div>
+</div>
+
+<div class="sch-rules">
+  <p class="sch-rules-title">Как записаться</p>
+  <ul class="sch-rules-list">
+    <li>Запись на вечерние группы открывается в 07:15 — напишите в Telegram или MAX на номер 8-918-688-73-97.</li>
+    <li>В сообщении укажите фамилию, имя и название тренировки или её время.</li>
+    <li>Если не получается прийти, предупредите заранее — желательно за 2 часа.</li>
+  </ul>
+  <p class="sch-rules-note">Занятия со звёздочкой не входят в абонемент и оплачиваются отдельно. Детей на «Современные танцы» можно привести без покупки клубной карты.</p>
 </div>
 
 <div class="sch-table-wrap">
@@ -468,111 +523,91 @@
     <tbody>
       <tr>
         <td class="sch-time">09:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="tue"><div class="sch-empty"></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="thu"><div class="sch-empty"></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="sat"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="sun"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-      </tr>
-      <tr>
-        <td class="sch-time">10:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Зумба</span><span class="sch-class-trainer">Гунько А.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Зумба</span><span class="sch-class-trainer">Гунько А.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-      </tr>
-      <tr>
-        <td class="sch-time">11:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-      </tr>
-      <tr>
-        <td class="sch-time">12:00</td>
-        <td data-day="mon"><div class="sch-empty"></div></td>
-        <td data-day="tue"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="wed"><div class="sch-empty"></div></td>
-        <td data-day="thu"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="fri"><div class="sch-empty"></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">Зумба</span><span class="sch-class-trainer">Гунько А.</span></div></td>
-      </tr>
-      <tr>
-        <td class="sch-time">13:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
+        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Интенсивная силовая тренировка</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Дроник Роман</span></div></td>
+        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Упругие ягодицы</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Дроник Роман</span></div></td>
+        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
         <td data-day="sat"><div class="sch-empty"></div></td>
         <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
-        <td class="sch-time">15:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Функциональный</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Функциональный</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Функциональный</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="sun"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
+        <td class="sch-time">10:00</td>
+        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="tue"><div class="sch-empty"></div></td>
+        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="thu"><div class="sch-empty"></div></td>
+        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Пресс + растяжка</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Стройное тело</span><span class="sch-class-trainer">Чуприна Ирина</span></div></td>
+        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">Хот айрон</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+      </tr>
+      <tr>
+        <td class="sch-time">11:00</td>
+        <td data-day="mon"><div class="sch-empty"></div></td>
+        <td data-day="tue"><div class="sch-empty"></div></td>
+        <td data-day="wed"><div class="sch-empty"></div></td>
+        <td data-day="thu"><div class="sch-empty"></div></td>
+        <td data-day="fri"><div class="sch-empty"></div></td>
+        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Чуприна Ирина</span></div></td>
+        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+      </tr>
+      <tr>
+        <td class="sch-time">13:30</td>
+        <td data-day="mon"><div class="sch-empty"></div></td>
+        <td data-day="tue"><div class="sch-empty"></div></td>
+        <td data-day="wed"><div class="sch-empty"></div></td>
+        <td data-day="thu"><div class="sch-empty"></div></td>
+        <td data-day="fri"><div class="sch-empty"></div></td>
+        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Танцевальный микс</span><span class="sch-class-trainer">Энрико</span></div></td>
+        <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
         <td class="sch-time">17:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Силовой тренинг</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="sun"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
+        <td data-day="mon"><div class="sch-class yellow"><span class="sch-class-name">Современные танцы (дети, гр. 3)<span class="sch-class-star">*</span></span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="tue"><div class="sch-empty"></div></td>
+        <td data-day="wed"><div class="sch-class yellow"><span class="sch-class-name">Современные танцы (дети, гр. 3)<span class="sch-class-star">*</span></span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="thu"><div class="sch-empty"></div></td>
+        <td data-day="fri"><div class="sch-empty"></div></td>
+        <td data-day="sat"><div class="sch-empty"></div></td>
+        <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
         <td class="sch-time">18:00</td>
-        <td data-day="mon"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="wed"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-        <td data-day="fri"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Ежов М.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Функциональный</span><span class="sch-class-trainer">Нененко О.</span></div></td>
+        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Интенсивная силовая тренировка</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Танцевальный микс</span><span class="sch-class-trainer">Энрико</span></div></td>
+        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Микс памп</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Танцевальный микс</span><span class="sch-class-trainer">Энрико</span></div></td>
+        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Плоский живот</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="sat"><div class="sch-empty"></div></td>
         <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
         <td class="sch-time">19:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Кроссфит</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Бокс</span><span class="sch-class-trainer">Пичиуз Д.</span></div></td>
-        <td data-day="sat"><div class="sch-class"><span class="sch-class-name">Зумба</span><span class="sch-class-trainer">Гунько А.</span></div></td>
+        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Функциональный тренинг</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Дроник Роман</span></div></td>
+        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Упругие ягодицы</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Йога</span><span class="sch-class-trainer">Дроник Роман</span></div></td>
+        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Пилатес + растяжка</span><span class="sch-class-trainer">Феоктистова Валерия</span></div></td>
+        <td data-day="sat"><div class="sch-empty"></div></td>
         <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
         <td class="sch-time">20:00</td>
-        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
-        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Кириченко В.</span></div></td>
-        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">TRX</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="fri"><div class="sch-class"><span class="sch-class-name">Стретчинг</span><span class="sch-class-trainer">Верба Дарья</span></div></td>
+        <td data-day="mon"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Хот айрон</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+        <td data-day="wed"><div class="sch-class"><span class="sch-class-name">Пилатес</span><span class="sch-class-trainer">Феоктистова Юлия</span></div></td>
+        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Хот айрон</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+        <td data-day="fri"><div class="sch-empty"></div></td>
         <td data-day="sat"><div class="sch-empty"></div></td>
         <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
       <tr>
         <td class="sch-time">21:00</td>
-        <td data-day="mon"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="tue"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Баранов И.</span></div></td>
-        <td data-day="wed"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
-        <td data-day="thu"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Нененко О.</span></div></td>
-        <td data-day="fri"><div class="sch-class yellow"><span class="sch-class-name">Персональная</span><span class="sch-class-trainer">Бучминский А.</span></div></td>
+        <td data-day="mon"><div class="sch-empty"></div></td>
+        <td data-day="tue"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+        <td data-day="wed"><div class="sch-empty"></div></td>
+        <td data-day="thu"><div class="sch-class"><span class="sch-class-name">Растяжка</span><span class="sch-class-trainer">Светловская Ася</span></div></td>
+        <td data-day="fri"><div class="sch-empty"></div></td>
         <td data-day="sat"><div class="sch-empty"></div></td>
         <td data-day="sun"><div class="sch-empty"></div></td>
       </tr>
@@ -626,7 +661,7 @@
 </script>
 
 <div class="cookie-banner" id="cookieBanner">
-  <p class="cookie-text">Мы используем файлы cookie для обеспечения нормальной работы сайта и анализа трафика. Продолжая пользоваться сайтом, вы соглашаетесь с нашей <a href="#">политикой конфиденциальности</a>.</p>
+  <p class="cookie-text">Мы используем файлы cookie для обеспечения нормальной работы сайта и анализа трафика. Продолжая пользоваться сайтом, вы соглашаетесь с нашей <a href="privacy.html">политикой конфиденциальности</a>.</p>
   <div class="cookie-actions">
     <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Принять</button>
     <button class="cookie-btn cookie-decline" onclick="declineCookies()">Отклонить</button>

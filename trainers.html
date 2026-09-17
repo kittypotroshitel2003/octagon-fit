@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Тренерский состав — OCTAGON-FIT</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#181818">
+  <script defer src="assets/analytics.js"></script>
+  <link rel="stylesheet" href="assets/lead-form.css">
   <style>
     @font-face { font-family: 'Gunterz'; src: url('fonts/Gunterz-Medium.woff2') format('woff2'); font-weight: 500; }
     @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Regular.woff2') format('woff2'); font-weight: 400; }
@@ -134,6 +141,23 @@
       background: linear-gradient(to bottom, transparent 50%, rgba(37,37,37,0.9) 100%);
     }
 
+    /* Заглушка, пока нет фотографии тренера */
+    .tc-photo-stub {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(254,216,0,0.14) 0%, transparent 62%),
+        var(--mid);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .tc-photo-stub span {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 76px;
+      letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.14);
+      user-select: none;
+    }
+
     /* Бейдж роли */
     .tc-badge {
       position: absolute;
@@ -245,6 +269,7 @@
     }
     .tc-btn:hover { background: #ffe235; transform: scale(1.02); }
     .tc-btn:active { transform: scale(0.98); }
+    .tc-btn:focus-visible, .tr-cta-btn:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
 
     /* ── CTA снизу ── */
     .tr-cta {
@@ -299,6 +324,9 @@
     }
     .footer-nav a:hover, .footer-privacy:hover { opacity: 0.6; }
     .footer-privacy { margin-left: auto; }
+    .footer-tel { color: #fff; text-decoration: none; transition: color 0.2s ease; }
+    .footer-tel:hover { color: var(--yellow); }
+    .footer-tel:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
     .footer-credit {
       display: flex; align-items: center; gap: 14px;
       margin-top: 48px; opacity: 0.38;
@@ -341,9 +369,9 @@
       .site-footer { padding: 44px 36px 56px; }
       .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
       .footer-bottom { flex-wrap: wrap; gap: 20px; }
-      .footer-addr { font-size: 18px; }
+      .footer-addr { font-size: 18px; letter-spacing: -0.02em; }
       .footer-nav { gap: 28px; }
-      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; letter-spacing: -0.02em; }
       .footer-privacy { margin-left: 0; }
     }
 
@@ -370,10 +398,10 @@
       .tr-cta-btn { font-size: 16px; padding: 16px 24px; text-align: center; width: 100%; justify-content: center; }
       .site-footer { padding: 36px 16px 44px; }
       .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; }
-      .footer-bottom { flex-direction: row; align-items: flex-end; gap: 8px; flex-wrap: nowrap; }
-      .footer-addr { font-size: 13px; white-space: normal; flex: 1; line-height: 1.6; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; flex-wrap: nowrap; }
+      .footer-addr { font-size: 14px; white-space: normal; flex: none; line-height: 1.7; letter-spacing: -0.01em; }
       .footer-nav { display: none; }
-      .footer-privacy { font-size: 13px; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-privacy { font-size: 13px; margin-left: 0; flex-shrink: 0; text-align: left; letter-spacing: -0.01em; }
       .footer-credit { margin-top: 20px; gap: 8px; }
       .footer-credit-text { font-size: 13px; }
       .footer-credit-logo img { height: 13px; }
@@ -426,7 +454,7 @@
         <li>Индивидуальные программы тренировок и питания</li>
         <li>Подготовка с учётом возраста и целей</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -450,29 +478,52 @@
         <li>Рекомендации по питанию</li>
         <li>Индивидуальный подход</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
-  <!-- Нененко Остап -->
+  <!-- Петросян Микаел -->
   <div class="tc" data-reveal data-delay="160">
     <div class="tc-photo-wrap">
-      <img class="tc-photo" src="img/trainer-2.webp" alt="Нененко Остап" loading="lazy">
+      <div class="tc-photo-stub"><span>ПМ</span></div>
       <div class="tc-photo-overlay"></div>
       <span class="tc-badge">Персональный тренер</span>
     </div>
     <div class="tc-body">
-      <span class="tc-exp">Опыт: 3 года</span>
-      <h2 class="tc-name">Нененко Остап</h2>
+      <span class="tc-exp">Опыт: с 2018 года</span>
+      <h2 class="tc-name">Петросян Микаел</h2>
       <div class="tc-sep"></div>
       <ul class="tc-specs">
-        <li>Похудение и рекомпозиция тела</li>
-        <li>Коррекция питания</li>
-        <li>Составление программ тренировок</li>
-        <li>Подготовка для любого уровня</li>
-        <li>Обучение правильной технике</li>
+        <li>Реабилитолог</li>
+        <li>Мастер спорта по жиму лёжа</li>
+        <li>Восстановление после травм</li>
+        <li>Работа с позвоночником</li>
+        <li>Силовые тренировки</li>
+        <li>Постановка техники упражнений</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
+    </div>
+  </div>
+
+  <!-- Калюжная Наталья -->
+  <div class="tc" data-reveal data-delay="200">
+    <div class="tc-photo-wrap">
+      <div class="tc-photo-stub"><span>КН</span></div>
+      <div class="tc-photo-overlay"></div>
+      <span class="tc-badge">Персональный тренер</span>
+    </div>
+    <div class="tc-body">
+      <span class="tc-exp">Опыт: с 2024 года</span>
+      <h2 class="tc-name">Калюжная Наталья</h2>
+      <div class="tc-sep"></div>
+      <ul class="tc-specs">
+        <li>Клинический нутрициолог</li>
+        <li>Функциональный тренинг</li>
+        <li>Коррекция фигуры</li>
+        <li>Снижение процента жира</li>
+        <li>Составление плана питания</li>
+      </ul>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -481,7 +532,7 @@
     <div class="tc-photo-wrap">
       <img class="tc-photo" src="img/trainer-3-new.webp" alt="Верба Дарья" loading="lazy">
       <div class="tc-photo-overlay"></div>
-      <span class="tc-badge">Фитнес-тренер</span>
+      <span class="tc-badge">Персональный тренер</span>
     </div>
     <div class="tc-body">
       <span class="tc-exp">Опыт: 3 года</span>
@@ -496,7 +547,7 @@
         <li>Работа с осанкой</li>
         <li>Общая физическая подготовка</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -505,7 +556,7 @@
     <div class="tc-photo-wrap">
       <img class="tc-photo" src="img/trainer-4-new.webp" alt="Кириченко Валерия" loading="lazy">
       <div class="tc-photo-overlay"></div>
-      <span class="tc-badge">Фитнес-тренер</span>
+      <span class="tc-badge">Персональный тренер</span>
     </div>
     <div class="tc-body">
       <span class="tc-exp">Опыт: 1 год</span>
@@ -519,7 +570,7 @@
         <li>Снижение веса</li>
         <li>Набор мышечной массы</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -548,7 +599,7 @@
           <li>Специалист ФКиС, БТФК (лёгкая атлетика)</li>
         </ul>
       </div>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -557,7 +608,7 @@
     <div class="tc-photo-wrap">
       <img class="tc-photo" src="img/trainer-gunko.webp" alt="Гунько Дарья" loading="lazy">
       <div class="tc-photo-overlay"></div>
-      <span class="tc-badge">Фитнес-тренер</span>
+      <span class="tc-badge">Персональный тренер</span>
     </div>
     <div class="tc-body">
       <span class="tc-exp">Опыт: 1 год</span>
@@ -569,20 +620,20 @@
         <li>Коррекция фигуры</li>
         <li>Нутрициологическое сопровождение</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
-  <!-- Пичуг Роман -->
+  <!-- Пичиуз Роман -->
   <div class="tc" data-reveal data-delay="240">
     <div class="tc-photo-wrap">
-      <img class="tc-photo" src="img/trainer-pichiuz.webp" alt="Пичуг Роман" loading="lazy">
+      <img class="tc-photo" src="img/trainer-pichiuz.webp" alt="Пичиуз Роман" loading="lazy">
       <div class="tc-photo-overlay"></div>
       <span class="tc-badge">Персональный тренер</span>
     </div>
     <div class="tc-body">
       <span class="tc-exp">Опыт: 5 лет</span>
-      <h2 class="tc-name">Пичуг Роман</h2>
+      <h2 class="tc-name">Пичиуз Роман</h2>
       <div class="tc-sep"></div>
       <ul class="tc-specs">
         <li>Набор мышечной массы</li>
@@ -592,7 +643,7 @@
         <li>Силовые тренировки</li>
         <li>Функциональный тренинг</li>
       </ul>
-      <a class="tc-btn" href="index.html#cta">Записаться</a>
+      <button class="tc-btn" type="button" onclick="openTrainerModal(this.closest('.tc-body').querySelector('.tc-name').textContent)">Записаться</button>
     </div>
   </div>
 
@@ -601,7 +652,7 @@
 <!-- CTA -->
 <div class="tr-cta" data-reveal>
   <p class="tr-cta-text">Не знаешь,<br>с кого <span>начать?</span></p>
-  <a class="tr-cta-btn" href="index.html#cta">Подберём тренера</a>
+  <button class="tr-cta-btn" type="button" onclick="openLeadModal('Страница тренеров — Подберём тренера')">Подберём тренера</button>
 </div>
 
 <footer class="site-footer">
@@ -609,14 +660,14 @@
     <img class="footer-logo" src="img/logo-footer.svg" alt="OCTAGON-FIT">
   </a>
   <div class="footer-bottom">
-    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00</div>
+    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00<br><a class="footer-tel" href="tel:+79675554397">+7 (967) 555-43-97</a><br><a class="footer-tel" href="mailto:octagon.fit@gmail.com">octagon.fit@gmail.com</a></div>
     <nav class="footer-nav">
       <a href="index.html#about">О нас</a>
       <a href="index.html#trainers">Тренеры</a>
       <a href="index.html#faq">Вопросы</a>
       <a href="schedule.html">Расписание</a>
     </nav>
-    <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+    <a class="footer-privacy" href="privacy.html">Политика конфиденциальности</a>
   </div>
   <div class="footer-credit">
     <span class="footer-credit-text">разработано</span>
@@ -654,5 +705,6 @@
   })();
 </script>
 
+<script defer src="assets/lead-form.js"></script>
 </body>
 </html>

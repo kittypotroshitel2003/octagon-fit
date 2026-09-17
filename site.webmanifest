@@ -1,0 +1,15 @@
+{
+  "name": "OCTAGON-FIT — фитнес-клуб в Краснодаре",
+  "short_name": "OCTAGON-FIT",
+  "description": "Территория силы и результата. Тренажёрный зал, групповые программы, сауна.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#181818",
+  "theme_color": "#181818",
+  "lang": "ru",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

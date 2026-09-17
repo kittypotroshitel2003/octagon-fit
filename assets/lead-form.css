@@ -1,0 +1,463 @@
+/* ═══════════════════════════════════════════════════
+   OCTAGON-FIT — формы заявок: модальное окно,
+   чекбокс согласия, статусы отправки.
+   Подключается на всех страницах с формами.
+═══════════════════════════════════════════════════ */
+:root {
+  --dark:     #181818;
+  --yellow:   #FED800;
+  --charcoal: #212121;
+}
+/* ════════════════════════════════════════
+   МОДАЛЬНОЕ ОКНО ЗАЯВКИ
+════════════════════════════════════════ */
+.job-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(6px);
+  z-index: 9000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 24px; box-sizing: border-box;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.job-modal-overlay.open { opacity: 1; pointer-events: all; }
+/* фокус при открытии уходит на сам диалог — кольцо тут не нужно */
+.job-modal-overlay:focus { outline: none; }
+.job-modal {
+  background: #1c1c1c;
+  border-radius: 28px;
+  padding: 52px 56px;
+  width: 100%; max-width: 560px;
+  position: relative;
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
+  opacity: 0;
+}
+.job-modal-overlay.open .job-modal { transform: translateY(0) scale(1); opacity: 1; }
+.job-modal-close {
+  position: absolute; top: 20px; right: 20px;
+  width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); border: none;
+  color: #fff; font-size: 18px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s ease;
+}
+.job-modal-close:hover { background: rgba(255,255,255,0.15); }
+.job-modal-position {
+  font-family: 'SFPro', sans-serif;
+  font-size: 13px; font-weight: 500;
+  color: var(--yellow);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.job-modal-title {
+  font-family: 'Gunterz', sans-serif;
+  font-weight: 500; font-size: 38px;
+  letter-spacing: -2px; color: #fff;
+  line-height: 1.05; margin-bottom: 36px;
+  overflow-wrap: break-word;
+}
+.job-modal-field { margin-bottom: 16px; }
+.job-modal-label {
+  display: block;
+  font-family: 'SFPro', sans-serif;
+  font-size: 13px; font-weight: 500;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 8px; letter-spacing: 0.02em;
+}
+.job-modal-input {
+  width: 100%; box-sizing: border-box;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 16px 20px;
+  font-family: 'SFPro', sans-serif;
+  font-size: 16px; color: #fff;
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.job-modal-input::placeholder { color: rgba(255,255,255,0.25); }
+.job-modal-input:focus { border-color: var(--yellow); background: rgba(255,255,255,0.09); }
+.job-modal-input.error { border-color: #ff4d4d; }
+.job-modal-file-label {
+  display: flex; align-items: center; gap: 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px dashed rgba(255,255,255,0.15);
+  border-radius: 14px; padding: 16px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.job-modal-file-label:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.09); }
+.job-modal-file-label .file-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: rgba(254,216,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; font-size: 16px;
+}
+.job-modal-file-label .file-text {
+  font-family: 'SFPro', sans-serif;
+  font-size: 14px; color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+}
+.job-modal-file-label .file-text strong {
+  display: block; color: rgba(255,255,255,0.85);
+  font-weight: 600; font-size: 15px;
+}
+.job-modal-field input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.job-modal-field:has(input[type="file"]:focus-visible) .job-modal-file-label { border-color: var(--yellow); }
+.job-modal-submit {
+  width: 100%; margin-top: 28px;
+  font-family: 'Gunterz', sans-serif;
+  font-weight: 500; font-size: 20px;
+  letter-spacing: -0.5px;
+  color: var(--charcoal); background: var(--yellow);
+  border: none; border-radius: 100px;
+  padding: 20px 0; cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.job-modal-submit:hover { background: #ffe235; transform: scale(1.02); }
+.job-modal-submit:active { transform: scale(0.98); }
+.job-modal-success, .jobs-form-success {
+  text-align: center; padding: 20px 0;
+}
+.job-modal-success .success-icon, .jobs-form-success .success-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: rgba(254,216,0,0.15);
+  margin: 0 auto 20px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+}
+.job-modal-success p, .jobs-form-success p {
+  font-family: 'SFPro', sans-serif;
+  font-size: 16px; color: rgba(255,255,255,0.65);
+  line-height: 1.6;
+}
+.job-modal-success h3, .jobs-form-success h3 {
+  font-family: 'Gunterz', sans-serif;
+  font-size: 32px; letter-spacing: -1.5px;
+  color: #fff; margin-bottom: 12px;
+}
+
+/* ── Переключатель «Первый раз / Уже занимаюсь» ── */
+.oct-switch {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  margin-bottom: 26px;
+  background: rgba(255,255,255,0.06);
+  border: 1.5px solid rgba(255,255,255,0.09);
+  border-radius: 100px;
+}
+.oct-switch-thumb {
+  position: absolute;
+  top: 4px; left: 4px;
+  width: calc(50% - 4px);
+  height: calc(100% - 8px);
+  border-radius: 100px;
+  background: var(--yellow);
+  box-shadow: 0 6px 18px -8px rgba(254,216,0,0.7);
+  transition: transform 0.26s cubic-bezier(0.23,1,0.32,1);
+}
+.oct-switch[data-active="member"] .oct-switch-thumb { transform: translateX(100%); }
+.oct-switch-btn {
+  position: relative;
+  z-index: 1;
+  padding: 12px 6px;
+  background: none;
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  font-family: 'SFPro', sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.55);
+  transition: color 0.2s ease, transform 0.16s cubic-bezier(0.23,1,0.32,1);
+}
+.oct-switch-btn.is-active { color: var(--charcoal); }
+.oct-switch-btn:active { transform: scale(0.97); }
+.oct-switch-btn:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) {
+  .oct-switch-btn:not(.is-active):hover { color: rgba(255,255,255,0.85); }
+}
+
+/* ── Поля действующего клиента ── */
+.oct-member { opacity: 0; transform: translateY(6px); }
+.oct-member.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.24s ease, transform 0.28s cubic-bezier(0.23,1,0.32,1);
+}
+.job-modal-select {
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+  padding-right: 46px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9' fill='none'%3E%3Cpath d='M1 1L7 7L13 1' stroke='%23FED800' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 20px center;
+}
+.job-modal-select option { background: #1c1c1c; color: #fff; }
+.oct-note {
+  margin: 4px 0 0;
+  padding: 16px 18px;
+  border: 1px solid rgba(254,216,0,0.28);
+  border-radius: 14px;
+  background: rgba(254,216,0,0.07);
+  font-family: 'SFPro', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.72);
+}
+.oct-note strong { display: block; color: #fff; font-weight: 600; margin-bottom: 4px; }
+#octModalForm.is-self #octNameField,
+#octModalForm.is-self #octPhoneField,
+#octModalForm.is-self #octWhenField,
+#octModalForm.is-self .consent { display: none; }
+
+/* Плашка cookie не должна перекрывать окно записи */
+body.oct-modal-open .cookie-banner { transform: translateY(110%); }
+
+/* ── Подтверждение для форм, встроенных в страницу ── */
+.form-success {
+  margin-top: 4px;
+  padding: 32px 28px;
+  border: 1px solid rgba(254,216,0,0.3);
+  border-radius: 20px;
+  background: rgba(254,216,0,0.08);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+}
+.form-success.is-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.26s ease, transform 0.34s cubic-bezier(0.23,1,0.32,1);
+}
+.form-success .success-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--charcoal);
+  font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
+}
+.form-success h3 {
+  font-family: 'Gunterz', sans-serif;
+  font-weight: 500;
+  font-size: 28px;
+  letter-spacing: -1.2px;
+  color: #fff;
+  margin: 0 0 10px;
+}
+.form-success p {
+  font-family: 'SFPro', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.68);
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .oct-switch-thumb, .oct-member.is-in, .form-success.is-in { transition: none; }
+  .oct-member, .form-success { transform: none; }
+}
+
+
+/* ════════════════════════════════════════
+   ЧЕКБОКС СОГЛАСИЯ (общий компонент)
+════════════════════════════════════════ */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  cursor: pointer;
+  margin-top: 20px;
+  user-select: none;
+}
+.consent-box {
+  position: absolute;
+  opacity: 0;
+  width: 22px; height: 22px;
+  margin: 0;
+  cursor: pointer;
+}
+.consent-mark {
+  flex-shrink: 0;
+  width: 22px; height: 22px;
+  border-radius: 7px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  background: rgba(255,255,255,0.06);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s cubic-bezier(0.34,1.56,0.64,1);
+}
+.consent-mark::after {
+  content: '';
+  width: 11px; height: 6px;
+  border-left: 2px solid var(--charcoal);
+  border-bottom: 2px solid var(--charcoal);
+  transform: rotate(-45deg) scale(0.4);
+  opacity: 0;
+  margin-top: -2px;
+  transition: opacity 0.18s ease, transform 0.22s cubic-bezier(0.34,1.56,0.64,1);
+}
+.consent:hover .consent-mark { border-color: rgba(255,255,255,0.45); }
+.consent-box:checked + .consent-mark {
+  background: var(--yellow);
+  border-color: var(--yellow);
+}
+.consent-box:checked + .consent-mark::after { opacity: 1; transform: rotate(-45deg) scale(1); }
+.consent-box:focus-visible + .consent-mark {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+}
+.consent-text {
+  font-family: 'SFPro', sans-serif;
+  font-size: 13px;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: -0.01em;
+}
+.consent-text a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.18s ease;
+}
+.consent-text a:hover { color: var(--yellow); }
+.consent.error .consent-mark { border-color: #ff4d4d; background: rgba(255,77,77,0.1); }
+.consent.error .consent-text { color: rgba(255,140,140,0.85); }
+
+/* Светлый вариант — на белом/жёлтом фоне */
+.consent--light .consent-mark { border-color: rgba(24,24,24,0.28); background: rgba(24,24,24,0.05); }
+.consent--light:hover .consent-mark { border-color: rgba(24,24,24,0.5); }
+.consent--light .consent-text { color: rgba(24,24,24,0.55); }
+.consent--light .consent-text a { color: rgba(24,24,24,0.85); }
+.consent--light .consent-text a:hover { color: #181818; }
+.consent--light .consent-box:checked + .consent-mark { background: var(--charcoal); border-color: var(--charcoal); }
+.consent--light .consent-mark::after { border-color: var(--yellow); }
+
+@media (prefers-reduced-motion: reduce) {
+  .consent-mark, .consent-mark::after { transition: none; }
+}
+
+/* ════════════════════════════════════════
+   СТАТУС ОТПРАВКИ ФОРМ
+════════════════════════════════════════ */
+.form-status {
+  font-family: 'SFPro', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  margin-top: 14px;
+  min-height: 0;
+  color: rgba(255,255,255,0.5);
+}
+.form-status.error { color: #ff8a8a; }
+.form-status:empty { display: none; }
+button.is-sending { opacity: 0.6; pointer-events: none; }
+
+/* ════════════════════════════════════════
+   МОДАЛЬНОЕ ОКНО — доп. элементы
+════════════════════════════════════════ */
+.job-modal-sub {
+  font-family: 'SFPro', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: -0.015em;
+  margin: -24px 0 30px;
+}
+.job-modal-title { margin-bottom: 30px; }
+.job-modal-close:focus-visible,
+.job-modal-submit:focus-visible,
+.job-apply:focus-visible,
+.btn-submit:focus-visible {
+  outline: 2px solid var(--yellow);
+  outline-offset: 3px;
+}
+.job-modal-input:focus-visible { outline: none; }
+.job-modal { max-height: 92vh; overflow-y: auto; scrollbar-width: thin; }
+
+/* ── Планшет ── */
+@media (min-width: 768px) and (max-width: 1199px) {
+  .job-modal { padding: 44px 40px; }
+  .job-modal-title { font-size: 32px; letter-spacing: -1.4px; }
+  .job-modal-sub { font-size: 15px; margin: -20px 0 26px; }
+}
+
+/* ── Мобильные ── */
+@media (max-width: 767px) {
+  .job-modal { padding: 36px 24px; border-radius: 20px; }
+  .job-modal-title { font-size: 28px; letter-spacing: -1.2px; margin-bottom: 24px; }
+  .job-modal-sub { font-size: 14.5px; margin: -18px 0 24px; }
+  .consent-text { font-size: 12.5px; }
+  .form-status { font-size: 13px; }
+  .oct-switch { margin-bottom: 22px; }
+  .oct-switch-btn { font-size: 13.5px; padding: 11px 4px; }
+  .oct-note { font-size: 13.5px; padding: 14px 16px; }
+  .form-success { padding: 26px 20px; border-radius: 16px; margin-bottom: 28px; }
+  .form-success .success-icon { width: 48px; height: 48px; font-size: 22px; margin-bottom: 14px; }
+  .form-success h3 { font-size: 23px; letter-spacing: -1px; }
+  .form-success p { font-size: 14.5px; }
+}
+
+/* ════════════════════════════════════════
+   ОКНО АКЦИИ
+   Баннер во всю ширину карточки, под ним
+   короткая форма — только телефон.
+════════════════════════════════════════ */
+.job-modal.is-promo { padding-top: 0; }
+.oct-modal-banner {
+  display: block;
+  width: calc(100% + 112px);
+  margin: 0 -56px 26px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  /* кадрируем снизу: там пустой пол, вверху логотип, даты и оффер */
+  object-position: center top;
+  border-radius: 28px 28px 0 0;
+}
+.job-modal.is-promo .job-modal-title {
+  font-size: 26px;
+  letter-spacing: -1.1px;
+  line-height: 1.12;
+  margin-bottom: 14px;
+}
+.job-modal.is-promo .job-modal-sub { margin: 0 0 26px; color: rgba(255,255,255,0.62); }
+.oct-sub-line { display: block; }
+.oct-sub-line + .oct-sub-line { margin-top: 12px; }
+
+/* крестик лежит на баннере — тёмная подложка, иначе теряется на светлых кадрах */
+.job-modal.is-promo .job-modal-close {
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(8px);
+}
+.job-modal.is-promo .job-modal-close:hover { background: rgba(0,0,0,0.75); }
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .oct-modal-banner { width: calc(100% + 80px); margin: 0 -40px 26px; }
+  .job-modal.is-promo .job-modal-title { font-size: 24px; }
+}
+@media (max-width: 767px) {
+  /* на телефоне кадрируем сильнее: иначе форма уходит за нижний край */
+  .oct-modal-banner {
+    width: calc(100% + 48px);
+    margin: 0 -24px 20px;
+    aspect-ratio: 3 / 2;
+    border-radius: 20px 20px 0 0;
+  }
+  .job-modal.is-promo { padding-bottom: 28px; }
+  .job-modal.is-promo .job-modal-title { font-size: 21px; letter-spacing: -0.8px; margin-bottom: 12px; }
+  .job-modal.is-promo .job-modal-sub { margin-bottom: 20px; }
+  .job-modal.is-promo .job-modal-submit { margin-top: 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-modal, .job-modal-overlay { transition: none !important; }
+}

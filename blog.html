@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Блог — OCTAGON-FIT</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#181818">
+  <script defer src="assets/analytics.js"></script>
   <style>
     @font-face { font-family: 'Gunterz'; src: url('fonts/Gunterz-Medium.woff2') format('woff2'); font-weight: 500; }
     @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Regular.woff2') format('woff2'); font-weight: 400; }
@@ -80,8 +86,8 @@
       color: #fff; text-transform: uppercase;
     }
     .bl-hero-desc {
-      max-width: 520px;
-      font-size: 18px; color: rgba(255,255,255,0.45);
+      max-width: 560px;
+      font-size: 20px; color: rgba(255,255,255,0.6);
       line-height: 1.65; letter-spacing: -0.02em;
       margin-top: 28px;
     }
@@ -155,15 +161,15 @@
     }
     .bl-card-title {
       font-family: 'SFPro', sans-serif; font-weight: 700;
-      font-size: 20px; color: #fff; line-height: 1.35;
+      font-size: 22px; color: #fff; line-height: 1.35;
       letter-spacing: -0.02em; margin-bottom: 16px;
     }
     .bl-card-meta {
       display: flex; align-items: center; gap: 16px;
     }
-    .bl-card-date { font-size: 13px; color: rgba(255,255,255,0.35); }
+    .bl-card-date { font-size: 14px; color: rgba(255,255,255,0.45); }
     .bl-card-read {
-      font-size: 13px; color: rgba(255,255,255,0.25);
+      font-size: 14px; color: rgba(255,255,255,0.4);
       display: flex; align-items: center; gap: 5px;
     }
 
@@ -172,7 +178,7 @@
       grid-column: span 2;
     }
     .bl-card.featured .bl-card-img { height: 400px; }
-    .bl-card.featured .bl-card-title { font-size: 26px; }
+    .bl-card.featured .bl-card-title { font-size: 30px; }
 
     /* ── Footer ── */
     .bl-footer {
@@ -206,6 +212,9 @@
     }
     .footer-nav a:hover, .footer-privacy:hover { opacity: 0.6; }
     .footer-privacy { margin-left: auto; }
+    .footer-tel { color: #fff; text-decoration: none; transition: color 0.2s ease; }
+    .footer-tel:hover { color: var(--yellow); }
+    .footer-tel:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
     .footer-credit {
       display: flex; align-items: center; gap: 14px;
       margin-top: 48px; opacity: 0.38;
@@ -233,15 +242,15 @@
       .bl-hero-title { font-size: 80px; }
       .bl-count { font-size: 60px; }
       .bl-filters { padding: 0 36px 40px; }
-      .bl-divider { margin: 0 36px; margin-bottom: 48px; }
+      .bl-divider { width: auto !important; margin: 0 36px 48px; }
       .bl-grid { padding: 0 36px 80px; grid-template-columns: repeat(2, 1fr); }
       .bl-card.featured { grid-column: span 2; }
       .site-footer { padding: 44px 36px 56px; }
       .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
       .footer-bottom { flex-wrap: wrap; gap: 20px; }
-      .footer-addr { font-size: 18px; }
+      .footer-addr { font-size: 18px; letter-spacing: -0.02em; }
       .footer-nav { gap: 28px; }
-      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; letter-spacing: -0.02em; }
       .footer-privacy { margin-left: 0; }
     }
 
@@ -252,19 +261,19 @@
       .bl-hero { padding: 36px 16px 36px; flex-direction: column; gap: 0; }
       .bl-hero-title { font-size: 52px; }
       .bl-count { display: none; }
-      .bl-hero-desc { font-size: 15px; }
+      .bl-hero-desc { font-size: 17px; }
       .bl-filters { padding: 0 16px 28px; }
-      .bl-divider { margin: 0 16px; margin-bottom: 32px; }
+      .bl-divider { width: auto !important; margin: 0 16px 32px; }
       .bl-grid { padding: 0 16px 60px; grid-template-columns: 1fr; gap: 16px; }
       .bl-card.featured { grid-column: span 1; }
       .bl-card.featured .bl-card-img { height: 240px; }
       .bl-card-img { height: 220px; }
       .site-footer { padding: 36px 16px 44px; }
       .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; }
-      .footer-bottom { flex-direction: row; align-items: flex-end; gap: 8px; flex-wrap: nowrap; }
-      .footer-addr { font-size: 13px; white-space: normal; flex: 1; line-height: 1.6; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; flex-wrap: nowrap; }
+      .footer-addr { font-size: 14px; white-space: normal; flex: none; line-height: 1.7; letter-spacing: -0.01em; }
       .footer-nav { display: none; }
-      .footer-privacy { font-size: 13px; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-privacy { font-size: 13px; margin-left: 0; flex-shrink: 0; text-align: left; letter-spacing: -0.01em; }
       .footer-credit { margin-top: 20px; gap: 8px; }
       .footer-credit-text { font-size: 13px; }
       .footer-credit-logo img { height: 13px; }
@@ -297,28 +306,54 @@
   <button class="bl-filter-btn" onclick="filterBlog(this,'Питание')">Питание</button>
   <button class="bl-filter-btn" onclick="filterBlog(this,'Восстановление')">Восстановление</button>
   <button class="bl-filter-btn" onclick="filterBlog(this,'Тренировки')">Тренировки</button>
-  <button class="bl-filter-btn" onclick="filterBlog(this,'Мотивация')">Мотивация</button>
+  <button class="bl-filter-btn" onclick="filterBlog(this,'Тренеры')">Тренеры</button>
 </div>
 
 <hr class="bl-divider">
 
 <div class="bl-grid" id="blogGrid">
-  <a href="blog-1.html" class="bl-card featured" data-cat="Новичкам" data-reveal data-delay="0">
+  <a href="news/nuzhen-li-novichku-personalnyy-trener/" class="bl-card featured" data-cat="Тренеры" data-reveal data-delay="0">
     <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/hero-training.webp" alt="Начни тренироваться">
+      <img class="bl-card-img" src="img/news-personal-trainer.webp" alt="Занятие с персональным тренером">
     </div>
     <div class="bl-card-body">
-      <span class="bl-card-tag">Новичкам</span>
-      <p class="bl-card-title">Как начать тренироваться и не бросить через неделю</p>
+      <span class="bl-card-tag">Тренеры</span>
+      <p class="bl-card-title">Нужен ли новичку персональный тренер: честный разбор</p>
       <div class="bl-card-meta">
-        <span class="bl-card-date">12 мая 2025</span>
-        <span class="bl-card-read">· 6 мин чтения</span>
+        <span class="bl-card-date">26 июля 2026</span>
+        <span class="bl-card-read">· 5 мин чтения</span>
       </div>
     </div>
   </a>
-  <a href="blog-2.html" class="bl-card" data-cat="Питание" data-reveal data-delay="80">
+  <a href="news/kardio-ili-silovye-dlya-pohudeniya/" class="bl-card" data-cat="Тренировки" data-reveal data-delay="80">
     <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/hero-nutrition.webp" alt="Питание для роста мышц">
+      <img class="bl-card-img" src="img/news-cardio-vs-strength.webp" alt="Кардио и силовая тренировка">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Тренировки</span>
+      <p class="bl-card-title">Кардио или силовые: что эффективнее для похудения</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">17 июля 2026</span>
+        <span class="bl-card-read">· 5 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="news/kak-nachat-trenirovatsya-v-zale-s-nulya/" class="bl-card" data-cat="Новичкам" data-reveal data-delay="160">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/news-start-training.webp" alt="Первая тренировка в зале" loading="lazy">
+    </div>
+    <div class="bl-card-body">
+      <span class="bl-card-tag">Новичкам</span>
+      <p class="bl-card-title">Как начать тренироваться в зале с нуля и не бросить через неделю</p>
+      <div class="bl-card-meta">
+        <span class="bl-card-date">17 июля 2026</span>
+        <span class="bl-card-read">· 4 мин чтения</span>
+      </div>
+    </div>
+  </a>
+  <a href="blog-2.html" class="bl-card" data-cat="Питание" data-reveal data-delay="240">
+    <div class="bl-card-img-wrap">
+      <img class="bl-card-img" src="img/hero-nutrition.webp" alt="Питание для роста мышц" loading="lazy">
     </div>
     <div class="bl-card-body">
       <span class="bl-card-tag">Питание</span>
@@ -329,9 +364,9 @@
       </div>
     </div>
   </a>
-  <a href="blog-3.html" class="bl-card" data-cat="Восстановление" data-reveal data-delay="160">
+  <a href="blog-3.html" class="bl-card" data-cat="Восстановление" data-reveal data-delay="320">
     <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/hero-recovery.webp" alt="Восстановление после тренировок">
+      <img class="bl-card-img" src="img/hero-recovery.webp" alt="Восстановление после тренировок" loading="lazy">
     </div>
     <div class="bl-card-body">
       <span class="bl-card-tag">Восстановление</span>
@@ -342,45 +377,6 @@
       </div>
     </div>
   </a>
-  <a href="#" class="bl-card" data-cat="Тренировки" data-reveal data-delay="240">
-    <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/card-blog1.webp" alt="Кроссфит vs тренажёрный зал">
-    </div>
-    <div class="bl-card-body">
-      <span class="bl-card-tag">Тренировки</span>
-      <p class="bl-card-title">Кроссфит vs тренажёрный зал: что выбрать и зачем совмещать</p>
-      <div class="bl-card-meta">
-        <span class="bl-card-date">15 апреля 2025</span>
-        <span class="bl-card-read">· 5 мин чтения</span>
-      </div>
-    </div>
-  </a>
-  <a href="#" class="bl-card" data-cat="Мотивация" data-reveal data-delay="320">
-    <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/card-blog2.webp" alt="Как сохранить мотивацию">
-    </div>
-    <div class="bl-card-body">
-      <span class="bl-card-tag">Мотивация</span>
-      <p class="bl-card-title">10 способов сохранить мотивацию, когда совсем не хочется в зал</p>
-      <div class="bl-card-meta">
-        <span class="bl-card-date">7 апреля 2025</span>
-        <span class="bl-card-read">· 4 мин чтения</span>
-      </div>
-    </div>
-  </a>
-  <a href="#" class="bl-card" data-cat="Питание" data-reveal data-delay="400">
-    <div class="bl-card-img-wrap">
-      <img class="bl-card-img" src="img/card-blog3.webp" alt="Протеин и добавки">
-    </div>
-    <div class="bl-card-body">
-      <span class="bl-card-tag">Питание</span>
-      <p class="bl-card-title">Нужен ли протеин новичку? Честный ответ без рекламы</p>
-      <div class="bl-card-meta">
-        <span class="bl-card-date">28 марта 2025</span>
-        <span class="bl-card-read">· 6 мин чтения</span>
-      </div>
-    </div>
-  </a>
 </div>
 
 <footer class="site-footer">
@@ -388,14 +384,14 @@
     <img class="footer-logo" src="img/logo-footer.svg" alt="OCTAGON-FIT">
   </a>
   <div class="footer-bottom">
-    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00</div>
+    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00<br><a class="footer-tel" href="tel:+79675554397">+7 (967) 555-43-97</a><br><a class="footer-tel" href="mailto:octagon.fit@gmail.com">octagon.fit@gmail.com</a></div>
     <nav class="footer-nav">
       <a href="index.html#about">О нас</a>
       <a href="index.html#trainers">Тренеры</a>
       <a href="index.html#faq">Вопросы</a>
       <a href="schedule.html">Расписание</a>
     </nav>
-    <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+    <a class="footer-privacy" href="privacy.html">Политика конфиденциальности</a>
   </div>
   <div class="footer-credit">
     <span class="footer-credit-text">разработано</span>

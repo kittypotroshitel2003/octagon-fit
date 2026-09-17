@@ -1,0 +1,15 @@
+{
+  "name": "octagon-fit-lead-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Приём заявок с сайта OCTAGON-FIT: почта + Telegram",
+  "main": "lead-api.mjs",
+  "scripts": {
+    "start": "node lead-api.mjs"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "nodemailer": "^6.9.16"
+  }
+}

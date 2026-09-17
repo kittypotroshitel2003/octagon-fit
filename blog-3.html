@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Восстановление после тренировок — OCTAGON-FIT</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#181818">
+  <script defer src="assets/analytics.js"></script>
+  <link rel="stylesheet" href="assets/lead-form.css">
   <style>
     @font-face { font-family: 'Gunterz'; src: url('fonts/Gunterz-Medium.woff2') format('woff2'); font-weight: 500; }
     @font-face { font-family: 'SFPro'; src: url('fonts/SF-Pro-Display-Regular.woff2') format('woff2'); font-weight: 400; }
@@ -50,8 +57,8 @@
       font-size: 12px; letter-spacing: 0.09em; text-transform: uppercase;
       padding: 6px 14px; border-radius: 100px;
     }
-    .art-date { font-size: 14px; color: rgba(255,255,255,0.35); }
-    .art-read { font-size: 14px; color: rgba(255,255,255,0.25); }
+    .art-date { font-size: 15px; color: rgba(255,255,255,0.35); }
+    .art-read { font-size: 15px; color: rgba(255,255,255,0.25); }
     .art-hero-title {
       font-family: 'Gunterz', sans-serif;
       font-size: 64px; letter-spacing: -0.055em; line-height: 1;
@@ -63,11 +70,11 @@
     .art-content { grid-column: 2; }
 
     .art-lead {
-      font-size: 22px; font-weight: 600; color: var(--charcoal);
+      font-size: 26px; font-weight: 600; color: var(--charcoal);
       line-height: 1.6; letter-spacing: -0.02em; margin-bottom: 40px;
       padding-bottom: 40px; border-bottom: 2px solid var(--yellow);
     }
-    .art-text { font-size: 18px; color: #333; line-height: 1.75; letter-spacing: -0.01em; }
+    .art-text { font-size: 20px; color: #2a2a2a; line-height: 1.8; letter-spacing: -0.01em; }
     .art-text p { margin-bottom: 24px; }
     .art-text h2 {
       font-family: 'Gunterz', sans-serif;
@@ -139,6 +146,8 @@
       transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
     }
     .art-form-submit:hover { background: #ffe235; transform: scale(1.02); }
+    .art-form-submit:active { transform: scale(0.98); }
+    .art-form-submit:focus-visible, .art-form-input:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
 
     .art-related { background: var(--dark); padding: 80px 120px 100px; }
     .art-related-title {
@@ -184,6 +193,9 @@
     }
     .footer-nav a:hover, .footer-privacy:hover { opacity: 0.6; }
     .footer-privacy { margin-left: auto; }
+    .footer-tel { color: #fff; text-decoration: none; transition: color 0.2s ease; }
+    .footer-tel:hover { color: var(--yellow); }
+    .footer-tel:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
     .footer-credit {
       display: flex; align-items: center; gap: 14px;
       margin-top: 48px; opacity: 0.38;
@@ -213,9 +225,9 @@
       .site-footer { padding: 44px 36px 56px; }
       .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
       .footer-bottom { flex-wrap: wrap; gap: 20px; }
-      .footer-addr { font-size: 18px; }
+      .footer-addr { font-size: 18px; letter-spacing: -0.02em; }
       .footer-nav { gap: 28px; }
-      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; letter-spacing: -0.02em; }
       .footer-privacy { margin-left: 0; }
     }
     @media (max-width: 767px) {
@@ -225,8 +237,8 @@
       .art-hero-title { font-size: 28px; letter-spacing: -0.03em; line-height: 1.1; }
       .art-hero-img { height: 220px; border-radius: 16px; }
       .art-body { grid-template-columns: 16px 1fr 16px; padding: 40px 0 64px; }
-      .art-lead { font-size: 16px; margin-bottom: 28px; padding-bottom: 28px; }
-      .art-text { font-size: 15px; }
+      .art-lead { font-size: 19px; margin-bottom: 28px; padding-bottom: 28px; }
+      .art-text { font-size: 17px; line-height: 1.75; }
       .art-text h2 { font-size: 24px; margin: 36px 0 14px; }
       .art-text p { margin-bottom: 18px; }
       .art-pillars { grid-template-columns: 1fr; }
@@ -239,10 +251,10 @@
       .art-form-input, .art-form-submit { font-size: 17px; padding: 16px 22px; }
       .site-footer { padding: 36px 16px 44px; }
       .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; }
-      .footer-bottom { flex-direction: row; align-items: flex-end; gap: 8px; flex-wrap: nowrap; }
-      .footer-addr { font-size: 13px; white-space: normal; flex: 1; line-height: 1.6; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 14px; flex-wrap: nowrap; }
+      .footer-addr { font-size: 14px; white-space: normal; flex: none; line-height: 1.7; letter-spacing: -0.01em; }
       .footer-nav { display: none; }
-      .footer-privacy { font-size: 13px; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-privacy { font-size: 13px; margin-left: 0; flex-shrink: 0; text-align: left; letter-spacing: -0.01em; }
       .footer-credit { margin-top: 20px; gap: 8px; }
       .footer-credit-text { font-size: 13px; }
       .footer-credit-logo img { height: 13px; }
@@ -323,22 +335,29 @@
 </div>
 
 <section class="art-cta-section">
-  <h2 class="art-cta-title" data-reveal>Запишись на<br>пробную тренировку</h2>
-  <form class="art-cta-form" data-reveal data-delay="150" onsubmit="return false;">
-    <input class="art-form-input" type="text" placeholder="Имя">
-    <input class="art-form-input" type="tel" placeholder="+7 (000) 000-00-00">
-    <button class="art-form-submit" type="submit">Записаться</button>
+  <h2 class="art-cta-title" data-reveal>Запишись на<br>гостевой визит</h2>
+  <form class="art-cta-form" id="artForm" data-tg="off" data-reveal data-delay="150" onsubmit="return submitArtForm(event)" novalidate>
+    <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <input class="art-form-input" id="artName" type="text" placeholder="Имя" autocomplete="name" aria-label="Имя">
+    <input class="art-form-input" id="artPhone" type="tel" placeholder="+7 (000) 000-00-00" autocomplete="tel" inputmode="tel" aria-label="Номер телефона">
+    <button class="art-form-submit" id="artSubmit" type="submit">Записаться</button>
+    <label class="consent" for="artConsent">
+      <input class="consent-box" type="checkbox" id="artConsent">
+      <span class="consent-mark" aria-hidden="true"></span>
+      <span class="consent-text">Я согласен на обработку персональных данных и принимаю условия <a href="privacy.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>
+    </label>
+    <p class="form-status" id="artStatus" role="status" aria-live="polite"></p>
   </form>
 </section>
 
 <section class="art-related">
   <h2 class="art-related-title" data-reveal>Читайте также</h2>
   <div class="art-related-grid">
-    <a href="blog-1.html" class="art-rel-card">
-      <img src="img/hero-training.webp" alt="Начни тренироваться">
+    <a href="news/kak-nachat-trenirovatsya-v-zale-s-nulya/" class="art-rel-card">
+      <img src="img/news-start-training.webp" alt="Первая тренировка в зале">
       <div class="art-rel-card-body">
         <span class="art-rel-tag">Новичкам</span>
-        <p class="art-rel-card-title">Как начать тренироваться и не бросить через неделю</p>
+        <p class="art-rel-card-title">Как начать тренироваться в зале с нуля и не бросить через неделю</p>
       </div>
     </a>
     <a href="blog-2.html" class="art-rel-card">
@@ -356,14 +375,14 @@
     <img class="footer-logo" src="img/logo-footer.svg" alt="OCTAGON-FIT">
   </a>
   <div class="footer-bottom">
-    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00</div>
+    <div class="footer-addr">Краснодар, ул. Селезнёва, 87<br>ежедневно: 07:00–23:00<br><a class="footer-tel" href="tel:+79675554397">+7 (967) 555-43-97</a><br><a class="footer-tel" href="mailto:octagon.fit@gmail.com">octagon.fit@gmail.com</a></div>
     <nav class="footer-nav">
       <a href="index.html#about">О нас</a>
       <a href="index.html#trainers">Тренеры</a>
       <a href="index.html#faq">Вопросы</a>
       <a href="schedule.html">Расписание</a>
     </nav>
-    <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+    <a class="footer-privacy" href="privacy.html">Политика конфиденциальности</a>
   </div>
   <div class="footer-credit">
     <span class="footer-credit-text">разработано</span>
@@ -397,5 +416,6 @@
     document.querySelectorAll('[data-reveal]').forEach(function(el) { ro.observe(el); });
   })();
 </script>
+<script defer src="assets/lead-form.js"></script>
 </body>
 </html>

@@ -4,10 +4,84 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OCTAGON-FIT — Территория силы и результата</title>
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#181818">
+
+  <!-- ═══ ПОДТВЕРЖДЕНИЕ ПРАВ НА САЙТ ═══
+       Раскомментируйте нужную строку и вставьте код из кабинета.
+       Google Search Console → «Добавить ресурс» → «Тег HTML».
+       Яндекс.Вебмастер   → «Добавить сайт» → «Мета-тег».
+  <meta name="google-site-verification" content="КОД_ИЗ_SEARCH_CONSOLE">
+  <meta name="yandex-verification" content="КОД_ИЗ_ВЕБМАСТЕРА">
+  ═════════════════════════════════════ -->
+
+  <meta name="description" content="OCTAGON-FIT — фитнес-клуб в Краснодаре на ул. Селезнёва, 87. Тренажёрный зал, 22+ направления, 9 тренеров, сауна. Ежедневно с 07:00 до 23:00.">
+  <link rel="canonical" href="https://octagon-fit.ru/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="OCTAGON-FIT">
+  <meta property="og:title" content="OCTAGON-FIT — территория силы и результата">
+  <meta property="og:description" content="Фитнес-клуб в Краснодаре: тренажёрный зал, групповые программы, сауна. Запишитесь на гостевой визит.">
+  <meta property="og:image" content="https://octagon-fit.ru/img/hero-poster.jpg">
+  <meta property="og:url" content="https://octagon-fit.ru/">
+  <meta property="og:locale" content="ru_RU">
+  <script defer src="assets/analytics.js"></script>
+  <link rel="stylesheet" href="assets/lead-form.css">
+  <script>
+    /* Масштаб десктопа должен применяться ДО парсинга iframe карты,
+       иначе Яндекс.Карты измеряют контейнер по неверному (немасштабированному) размеру */
+    document.documentElement.style.zoom = window.innerWidth >= 1200 ? (window.innerWidth / 1920) : 1;
+  </script>
+  <link rel="preload" href="fonts/tilda-sans_regular.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/tilda-sans_bold.ttf" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/Gunterz-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/SF-Pro-Display-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     /* ── Шрифты ── */
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_regular.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_medium.ttf') format('truetype');
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_semibold.ttf') format('truetype');
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_bold.ttf') format('truetype');
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_extra-bold-.ttf') format('truetype');
+      font-weight: 800;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'TildaSans';
+      src: url('fonts/tilda-sans_black.ttf') format('truetype');
+      font-weight: 900;
+      font-style: normal;
+      font-display: swap;
+    }
     @font-face {
       font-family: 'Gunterz';
       src: url('fonts/Gunterz-Medium.woff2') format('woff2');
@@ -335,11 +409,10 @@
     /* Гантель — оригинальные значения из Figma */
     .phil-dumbbell {
       position: absolute;
-      left: calc(50% - 98.31px);
-      top: 906px;
+      left: 410px;
+      top: -141px;
       width: 903px;
       height: 912px;
-      transform: translateX(-50%);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -379,6 +452,14 @@
       transform: translateX(-50%);
     }
     .pt.l56 { font-size: 56px; letter-spacing: -3.92px; }
+    /* логотип занимает место, освободившееся под правой колонкой */
+    .phil-logo {
+      position: absolute;
+      left: 931px;
+      top: 465px;
+      width: 940px;
+      height: 103px;
+    }
 
     /* ════════════════════════════════════════
        3. ТЕРРИТОРИЯ СИЛЫ И РЕЗУЛЬТАТА
@@ -523,6 +604,25 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+
+    /* Заглушка, пока нет фотографии тренера */
+    .tr-photo-stub {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(120% 90% at 50% 0%, rgba(254,216,0,0.14) 0%, transparent 62%),
+        #252525;
+    }
+    .tr-photo-stub span {
+      font-family: 'Gunterz', sans-serif;
+      font-size: 92px;
+      letter-spacing: -0.04em;
+      color: rgba(255,255,255,0.14);
+      user-select: none;
     }
     /* Боковые стрелки */
     .tr-side-btn {
@@ -741,7 +841,7 @@
       --reveal-extra: translateX(-50%);
       position: absolute;
       top: 170px;
-      left: calc(50% + 455.5px);
+      left: calc(50% + 430px);
       font-family: 'Gunterz', sans-serif;
       font-weight: 500;
       font-size: 85px;
@@ -805,8 +905,38 @@
       text-align: center;
       width: 100%;
     }
+    /* Согласие и статус — крупный масштаб формы из Figma */
+    .cta-form .consent { margin-top: 0; gap: 18px; }
+    .cta-form .consent-mark { width: 32px; height: 32px; border-radius: 10px; border-width: 2px; }
+    .cta-form .consent-mark::after { width: 15px; height: 8px; border-left-width: 3px; border-bottom-width: 3px; }
+    .cta-form .consent-text { font-size: 19px; line-height: 1.5; color: rgba(255,255,255,0.62); }
+    .cta-form .consent-text a { color: rgba(255,255,255,0.88); }
+    .cta-form .form-status { font-size: 20px; margin-top: 0; }
 
     /* Карта — абсолютное позиционирование из Figma (left:923, top:473, width:867, height:554) */
+    .cta-map { scroll-margin-top: 24px; }
+    .cta-member {
+      margin: 0;
+      font-family: 'SFPro', sans-serif;
+      font-size: 19px;
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.5);
+    }
+    .cta-member-link {
+      font: inherit;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      color: var(--yellow);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: opacity 0.2s ease, transform 0.16s cubic-bezier(0.23,1,0.32,1);
+    }
+    .cta-member-link:active { transform: scale(0.98); }
+    .cta-member-link:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
+
     .cta-map {
       position: absolute;
       left: 923px;
@@ -856,6 +986,9 @@
       white-space: nowrap;
     }
     .footer-privacy { margin-left: auto; }
+    .footer-tel { color: #fff; text-decoration: none; transition: color 0.2s ease; }
+    .footer-tel:hover { color: var(--yellow); }
+    .footer-tel:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
     .footer-map-mobile { display: none; }
     .footer-logo-link { display: inline-block; }
     .footer-credit {
@@ -917,6 +1050,7 @@
     .btn-submit { transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1); }
     .btn-submit:hover { background: #ffe235; transform: scale(1.02); }
     .btn-submit:active { transform: scale(0.98); }
+    .cta-member-link:hover { opacity: 0.78; }
 
     .footer-nav a { transition: opacity 0.2s ease; }
     .footer-nav a:hover { opacity: 0.6; }
@@ -982,6 +1116,7 @@
       flex-shrink: 0;
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     }
+    .faq-icon svg { width: 20px; height: 20px; flex-shrink: 0; }
     .faq-item.open .faq-icon { transform: rotate(45deg); }
     .faq-answer {
       max-height: 0;
@@ -1146,7 +1281,7 @@
     .blog-card-title {
       font-family: 'SFPro', sans-serif;
       font-weight: 700;
-      font-size: 22px;
+      font-size: 24px;
       color: var(--charcoal);
       line-height: 1.35;
       letter-spacing: -0.3px;
@@ -1159,8 +1294,10 @@
     }
 
     /* ════════════════════════════════════════
-       10. ВАКАНСИИ
+       10. РАБОТА У НАС
     ════════════════════════════════════════ */
+    [hidden] { display: none !important; }
+
     .jobs-section {
       background: var(--dark);
       width: 1920px;
@@ -1239,129 +1376,82 @@
     .job-apply:active { transform: scale(0.97); }
 
     /* ════════════════════════════════════════
-       JOB APPLICATION MODAL
+       БЛОК «ХОТИТЕ РАБОТАТЬ С НАМИ?»
     ════════════════════════════════════════ */
-    .job-modal-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.72);
-      backdrop-filter: blur(6px);
-      z-index: 9000;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s ease;
+    .jobs-invite {
+      display: flex;
+      align-items: flex-start;
+      gap: 100px;
     }
-    .job-modal-overlay.open { opacity: 1; pointer-events: all; }
-    .job-modal {
-      background: #1c1c1c;
-      border-radius: 28px;
-      padding: 52px 56px;
-      width: 100%; max-width: 560px;
+    .jobs-invite-left { flex: 1; padding-top: 6px; }
+    .jobs-eyebrow {
+      display: inline-block;
+      background: var(--yellow); color: var(--dark);
+      font-family: 'SFPro', sans-serif; font-weight: 700;
+      font-size: 13px; letter-spacing: 0.09em; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 100px; margin-bottom: 28px;
+    }
+    .jobs-invite .jobs-title { text-align: left; max-width: 12ch; }
+    .jobs-lead {
+      font-family: 'SFPro', sans-serif;
+      font-size: 21px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: -0.02em;
+      margin-top: 28px;
+      max-width: 30ch;
+    }
+    .jobs-points { list-style: none; margin: 40px 0 0; padding: 0; }
+    .jobs-points li {
       position: relative;
-      transform: translateY(24px) scale(0.97);
-      transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s ease;
-      opacity: 0;
-    }
-    .job-modal-overlay.open .job-modal { transform: translateY(0) scale(1); opacity: 1; }
-    .job-modal-close {
-      position: absolute; top: 20px; right: 20px;
-      width: 40px; height: 40px; border-radius: 50%;
-      background: rgba(255,255,255,0.08); border: none;
-      color: #fff; font-size: 18px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: background 0.2s ease;
-    }
-    .job-modal-close:hover { background: rgba(255,255,255,0.15); }
-    .job-modal-position {
+      padding: 20px 0 20px 34px;
+      border-top: 1px solid rgba(255,255,255,0.08);
       font-family: 'SFPro', sans-serif;
-      font-size: 13px; font-weight: 500;
-      color: var(--yellow);
-      letter-spacing: 0.05em; text-transform: uppercase;
-      margin-bottom: 12px;
+      font-size: 18px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.72);
+      letter-spacing: -0.02em;
+      max-width: 34ch;
     }
-    .job-modal-title {
+    .jobs-points li:last-child { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .jobs-points li::before {
+      content: '';
+      position: absolute; left: 0; top: 28px;
+      width: 18px; height: 2px; border-radius: 2px;
+      background: var(--yellow);
+    }
+
+    /* Карточка формы */
+    .jobs-form {
+      flex-shrink: 0;
+      width: 560px;
+      background: #1c1c1c;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 28px;
+      padding: 44px 48px;
+      box-shadow: 0 30px 70px -30px rgba(0,0,0,0.9), 0 2px 0 rgba(255,255,255,0.03) inset;
+    }
+    .jf-title {
       font-family: 'Gunterz', sans-serif;
-      font-weight: 500; font-size: 38px;
-      letter-spacing: -2px; color: #fff;
-      line-height: 1.05; margin-bottom: 36px;
+      font-weight: 500; font-size: 30px;
+      letter-spacing: -1.6px; color: #fff;
+      line-height: 1.05; margin-bottom: 8px;
     }
-    .job-modal-field { margin-bottom: 16px; }
-    .job-modal-label {
-      display: block;
+    .jf-note {
       font-family: 'SFPro', sans-serif;
-      font-size: 13px; font-weight: 500;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 8px; letter-spacing: 0.02em;
+      font-size: 15px; line-height: 1.55;
+      color: rgba(255,255,255,0.42);
+      letter-spacing: -0.015em;
+      margin-bottom: 28px;
     }
-    .job-modal-input {
-      width: 100%; box-sizing: border-box;
-      background: rgba(255,255,255,0.06);
-      border: 1.5px solid rgba(255,255,255,0.1);
-      border-radius: 14px;
-      padding: 16px 20px;
-      font-family: 'SFPro', sans-serif;
-      font-size: 16px; color: #fff;
-      outline: none;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-    .job-modal-input::placeholder { color: rgba(255,255,255,0.25); }
-    .job-modal-input:focus { border-color: var(--yellow); background: rgba(255,255,255,0.09); }
-    .job-modal-input.error { border-color: #ff4d4d; }
-    .job-modal-file-label {
-      display: flex; align-items: center; gap: 14px;
-      background: rgba(255,255,255,0.06);
-      border: 1.5px dashed rgba(255,255,255,0.15);
-      border-radius: 14px; padding: 16px 20px;
-      cursor: pointer;
-      transition: border-color 0.2s ease, background 0.2s ease;
-    }
-    .job-modal-file-label:hover { border-color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.09); }
-    .job-modal-file-label .file-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: rgba(254,216,0,0.15);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 16px;
-    }
-    .job-modal-file-label .file-text {
-      font-family: 'SFPro', sans-serif;
-      font-size: 14px; color: rgba(255,255,255,0.55);
-      line-height: 1.4;
-    }
-    .job-modal-file-label .file-text strong {
-      display: block; color: rgba(255,255,255,0.85);
-      font-weight: 600; font-size: 15px;
-    }
-    #jobFileInput { display: none; }
-    .job-modal-submit {
-      width: 100%; margin-top: 28px;
-      font-family: 'Gunterz', sans-serif;
-      font-weight: 500; font-size: 20px;
-      letter-spacing: -0.5px;
-      color: var(--charcoal); background: var(--yellow);
-      border: none; border-radius: 100px;
-      padding: 20px 0; cursor: pointer;
-      transition: background 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-    }
-    .job-modal-submit:hover { background: #ffe235; transform: scale(1.02); }
-    .job-modal-submit:active { transform: scale(0.98); }
-    .job-modal-success {
-      text-align: center; padding: 20px 0;
-    }
-    .job-modal-success .success-icon {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: rgba(254,216,0,0.15);
-      margin: 0 auto 20px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 28px;
-    }
-    .job-modal-success p {
-      font-family: 'SFPro', sans-serif;
-      font-size: 16px; color: rgba(255,255,255,0.65);
-      line-height: 1.6;
-    }
-    .job-modal-success h3 {
-      font-family: 'Gunterz', sans-serif;
-      font-size: 32px; letter-spacing: -1.5px;
-      color: #fff; margin-bottom: 12px;
+    .jobs-form .job-modal-submit { margin-top: 24px; }
+    .jobs-form-success { display: none; text-align: center; padding: 30px 0; }
+    .jobs-form.sent .jobs-form-body { display: none; }
+    .jobs-form.sent .jobs-form-success { display: block; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .job-modal, .job-modal-overlay { transition: none !important; }
+      [data-reveal] { transition: none !important; }
     }
 
     /* ════════════════════════════════════════
@@ -1498,6 +1588,7 @@
       .phil-dumbbell { display: none; }
       .pt { display: none; }
       .pt.l56 { display: none; }
+      .phil-logo { display: none; }
       .phil-text-mobile {
         display: block;
         position: relative;
@@ -1588,6 +1679,10 @@
       .cta-form .form-input { transform: none !important; opacity: 1 !important; }
       .form-input { font-size: 20px; padding: 18px 28px; }
       .btn-submit { font-size: 20px; padding: 18px; }
+      .cta-form .consent-mark { width: 26px; height: 26px; border-radius: 8px; }
+      .cta-form .consent-text { font-size: 15px; }
+      .cta-form .form-status { font-size: 16px; }
+      .cta-member { font-size: 15px; }
       .cta-map { position: relative !important; top: auto !important; left: auto !important; width: 100%; height: 340px; margin: 0 auto 52px; border-radius: 20px; transform: none !important; opacity: 1 !important; overflow: hidden !important; }
       .cta-spacer { height: 0; }
 
@@ -1595,9 +1690,9 @@
       .site-footer { padding: 44px 0 56px; }
       .footer-logo { width: 180px; height: 99px; margin-bottom: 28px; }
       .footer-bottom { flex-wrap: wrap; gap: 20px; }
-      .footer-addr { font-size: 18px; }
+      .footer-addr { font-size: 18px; letter-spacing: -0.02em; }
       .footer-nav { gap: 28px; }
-      .footer-nav a, .footer-privacy { font-size: 18px; }
+      .footer-nav a, .footer-privacy { font-size: 18px; letter-spacing: -0.02em; }
       .footer-privacy { margin-left: 0; }
 
       /* Cookie Banner — tablet (vw units bypass zoom) */
@@ -1625,10 +1720,23 @@
       .blog-card-img { height: 260px; }
 
       /* Jobs tablet */
-      .jobs-section { padding: 72px 36px; border-radius: 24px 24px 0 0; }
+      [hidden] { display: none !important; }
+
+    .jobs-section { padding: 72px 36px; border-radius: 24px 24px 0 0; }
       .jobs-title { font-size: 48px; letter-spacing: -3px; }
       .job-title { font-size: 22px; letter-spacing: -0.8px; }
       .job-apply { font-size: 16px; padding: 16px 28px; }
+      .jobs-invite { flex-direction: column; gap: 48px; }
+      .jobs-invite-left { width: 100%; }
+      .jobs-invite .jobs-title { max-width: 100%; }
+      .jobs-lead { font-size: 19px; max-width: 46ch; margin-top: 22px; }
+      .jobs-points { margin-top: 32px; }
+      .jobs-points li { font-size: 17px; max-width: 100%; padding: 18px 0 18px 30px; }
+      .jobs-points li::before { top: 26px; width: 14px; }
+      .jobs-form { width: 100%; padding: 36px 32px; }
+      .jf-title { font-size: 26px; }
+      .jf-note { font-size: 14px; margin-bottom: 24px; }
+      .jobs-eyebrow { margin-bottom: 22px; }
     }
 
     /* ── MOBILE (< 768px) ── */
@@ -1769,6 +1877,7 @@
       .phil-dumbbell { display: none; }
       .pt { display: none; }
       .pt.l56 { display: none; }
+      .phil-logo { display: none; }
       .phil-text-mobile {
         display: block;
         position: relative;
@@ -1861,6 +1970,11 @@
       .cta-form .form-input { transform: none !important; opacity: 1 !important; }
       .form-input { font-size: 17px; padding: 15px 22px; }
       .btn-submit { font-size: 17px; padding: 15px; }
+      .cta-form .consent { gap: 12px; }
+      .cta-form .consent-mark { width: 22px; height: 22px; border-radius: 7px; }
+      .cta-form .consent-text { font-size: 12.5px; }
+      .cta-form .form-status { font-size: 13px; }
+      .cta-member { font-size: 13.5px; }
       .cta-map { position: relative !important; top: auto !important; left: auto !important; width: 100%; height: 260px; margin-bottom: 36px; border-radius: 16px; transform: none !important; opacity: 1 !important; overflow: hidden !important; }
       .cta-spacer { height: 0; }
 
@@ -1876,10 +1990,10 @@
       .site-footer { display: block !important; padding: 36px 16px 44px; }
       .footer-logo-link { display: inline-block; }
       .footer-logo { width: 140px; height: 77px; margin-bottom: 20px; display: block; }
-      .footer-bottom { display: flex !important; flex-direction: row !important; align-items: flex-end !important; gap: 8px; }
-      .footer-addr { font-size: 13px; white-space: normal; display: block !important; line-height: 1.6; flex: 1; }
+      .footer-bottom { display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 14px; }
+      .footer-addr { font-size: 14px; white-space: normal; display: block !important; line-height: 1.7; flex: none; letter-spacing: -0.01em; }
       .footer-nav { display: none !important; }
-      .footer-privacy { font-size: 13px; display: block !important; opacity: 1 !important; margin-left: auto; flex-shrink: 0; text-align: right; }
+      .footer-privacy { font-size: 13px; display: block !important; opacity: 1 !important; margin-left: 0; flex-shrink: 0; text-align: left; letter-spacing: -0.01em; }
       .footer-credit { margin-top: 20px; gap: 8px; }
       .footer-credit-text { font-size: 13px; }
       .footer-credit-logo img { height: 13px; }
@@ -1910,18 +2024,29 @@
       .blog-grid { grid-template-columns: 1fr; gap: 12px; }
       .blog-card-img { height: 220px; }
       .blog-card-body { padding: 24px; }
-      .blog-card-title { font-size: 18px; }
+      .blog-card-title { font-size: 20px; }
 
       /* Jobs mobile */
-      .jobs-section { padding: 52px 16px; border-radius: 20px 20px 0 0; }
+      [hidden] { display: none !important; }
+
+    .jobs-section { padding: 52px 16px; border-radius: 20px 20px 0 0; }
       .jobs-header { flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 28px; }
       .jobs-title { font-size: 32px; letter-spacing: -1.8px; transform: none !important; opacity: 1 !important; }
       .jobs-count { font-size: 15px; }
       .job-item { flex-direction: column; align-items: flex-start; gap: 16px; padding: 28px 0; }
       .job-title { font-size: 20px; letter-spacing: -0.5px; margin-bottom: 8px; }
       .job-apply { width: 100%; text-align: center; padding: 14px; font-size: 15px; }
-      .job-modal { padding: 36px 24px; border-radius: 20px; }
-      .job-modal-title { font-size: 28px; letter-spacing: -1.2px; margin-bottom: 24px; }
+      .jobs-invite { flex-direction: column; gap: 32px; }
+      .jobs-invite-left { width: 100%; padding-top: 0; }
+      .jobs-invite .jobs-title { max-width: 100%; text-align: left; }
+      .jobs-eyebrow { font-size: 11px; padding: 5px 13px; margin-bottom: 18px; }
+      .jobs-lead { font-size: 16px; margin-top: 18px; max-width: 100%; }
+      .jobs-points { margin-top: 26px; }
+      .jobs-points li { font-size: 15px; max-width: 100%; padding: 16px 0 16px 26px; }
+      .jobs-points li::before { top: 23px; width: 12px; }
+      .jobs-form { width: 100%; padding: 28px 20px; border-radius: 22px; }
+      .jf-title { font-size: 22px; letter-spacing: -1.1px; }
+      .jf-note { font-size: 13.5px; margin-bottom: 20px; }
     }
 
     /* ════════════════════════════════════════
@@ -1945,6 +2070,7 @@
       box-shadow: 0 -12px 60px rgba(0,0,0,0.5);
     }
     .cookie-banner.visible { transform: translateY(0); }
+    body.nav-open .cookie-banner { transform: translateY(110%); }
     .cookie-text {
       font-family: 'SFPro', sans-serif;
       font-size: 22px;
@@ -1971,6 +2097,97 @@
     .cookie-btn:active { transform: scale(0.97); }
     .cookie-accept { background: var(--yellow); color: var(--charcoal); }
     .cookie-decline { background: transparent; color: rgba(255,255,255,0.7); border: 1.5px solid rgba(255,255,255,0.25); }
+
+    /* ── Tilda Sans — веса ── */
+    /* Black 900: крупные заголовки, цифры, акценты */
+    .h-title, .sc-promo .promo-big, .pt, .ptm,
+    .t-title, .tr-title, .comfort-title,
+    .cta-zapishy, .cta-probnuyu, .cta-trenirovku,
+    .faq-title, .clients-title, .blog-title, .jobs-title { font-weight: 900; }
+    /* Bold 700: подзаголовки, крупные лейблы навигации */
+    .sc-dirs .dir-title, .job-title, .job-modal-title, .jf-title,
+    .job-modal-success h3, .jobs-form-success h3, .hero-mobile-nav ul a { font-weight: 700; }
+    /* Semibold 600: меню, кнопки, подписи-пилюли */
+    .h-nav a, .h-btn-start, .h-btn-connect, .btn-book, .tr-all-btn,
+    .zone-label, .amenity-label, .job-apply, .job-modal-submit,
+    .blog-tag { font-weight: 600; }
+
+    /* ── Ховер: зоны ── */
+    .zone-card { cursor: pointer; }
+    .zone-card img.zc-bg {
+      transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .zone-card:hover img.zc-bg { transform: scale(1.07); }
+    .zone-card:hover { box-shadow: 0 20px 60px rgba(0,0,0,0.65); }
+
+    /* ── Ховер: тренеры ── */
+    .tr-card {
+      cursor: pointer;
+      transition: opacity 1.4s cubic-bezier(0.22,1,0.36,1),
+                  transform 1.4s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.4s ease;
+    }
+    .tr-photo { transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .tr-card:hover .tr-photo { transform: scale(1.06); }
+    .tr-card.in-view:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+    }
+
+    /* ── Ховер: комфорт ── */
+    .amenity {
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s ease;
+    }
+    .amenity img { transition: transform 0.65s cubic-bezier(0.25,0.46,0.45,0.94); }
+    .amenity:hover {
+      transform: scale(1.025);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      z-index: 1;
+    }
+    .amenity:hover img { transform: scale(1.08); }
+
+    /* ── Uppercase + межбуквенное расстояние ── */
+    .h-title, .sc-promo .promo-big, .pt, .ptm,
+    .t-title, .tr-title, .comfort-title,
+    .cta-zapishy, .cta-probnuyu, .cta-trenirovku,
+    .faq-title, .clients-title, .blog-title, .jobs-title,
+    .sc-dirs .dir-title, .job-title, .job-modal-title, .jf-title,
+    .job-modal-success h3, .jobs-form-success h3 {
+      text-transform: uppercase;
+    }
+    .zone-label, .amenity-label, .blog-tag {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Блок с гантелей на планшете и телефоне ──────────────────
+       Он свёрстан абсолютными координатами под макет 1920px, поэтому
+       вместо отдельной раскладки показываем ту же композицию целиком,
+       уменьшенную под ширину экрана. Отрицательный margin съедает
+       пустоту: transform не меняет место, занятое элементом в потоке. */
+    @media (max-width: 1199px) {
+      .philosophy {
+        display: block;
+        /* !important — иначе перебивает общее правило ширины для планшета */
+        width: 1920px !important;
+        height: 771px;
+        padding: 0;
+        overflow: visible;
+        transform-origin: top left;
+        /* первая пара значений — запас для браузеров без деления длин в calc() */
+        transform: scale(0.4);
+        transform: scale(calc(100vw / 1920px));
+        margin-bottom: -463px;
+        margin-bottom: calc(771px * (100vw / 1920px - 1));
+      }
+      .pt, .pt.l56 { display: block; }
+      /* именно flex: на block ломается центрирование и поворот гантели */
+      .phil-dumbbell { display: flex; }
+      .phil-logo { display: block; }
+      .phil-text-mobile { display: none; }
+    }
+
   </style>
 </head>
 <body>
@@ -1990,11 +2207,10 @@
       <li><a href="trainers.html">Тренеры</a></li>
       <li><a href="#faq">Вопросы</a></li>
       <li><a href="blog.html">Блог</a></li>
-      <li><a href="#jobs">Вакансии</a></li>
-      <li><a href="#cta">Контакты</a></li>
+      <li><a href="#contacts">Контакты</a></li>
       <li><a href="schedule.html">Расписание</a></li>
     </ul>
-    <button class="h-btn-connect" onclick="location.href='#cta'">Связаться</button>
+    <button class="h-btn-connect" type="button" onclick="openLeadModal('Шапка — Связаться')">Связаться</button>
     <button class="h-burger" id="hBurger" aria-label="Меню">
       <span></span><span></span><span></span>
     </button>
@@ -2006,7 +2222,7 @@
       Сделай его здесь
     </h1>
     <div class="hero-actions">
-      <button class="h-btn-start" onclick="location.href='#cta'">
+      <button class="h-btn-start" type="button" onclick="openLeadModal('Первый экран — Начать')">
         Начать тренировки
         <span class="icon-wrap">
           <img class="ci" src="img/btn-circle-yellow.svg" alt="">
@@ -2026,7 +2242,7 @@
         <img src="img/avatar-4.webp" alt="">
       </div>
       <div class="count-block">
-        <p class="count-big">8+</p>
+        <p class="count-big">9</p>
         <p class="count-label">профессиональных тренеров</p>
       </div>
       <p class="desc">Каждый тренер — сертифицированный специалист с опытом работы. Подберем наставника под твою цель и уровень.</p>
@@ -2041,7 +2257,7 @@
     </div>
 
     <!-- Карточка: акция -->
-    <div class="stat-card sc-promo" onclick="location.href='#cta'">
+    <div class="stat-card sc-promo" role="button" tabindex="0" onclick="openLeadModal('Карточка «50% выгода»')">
       <p class="promo-big">50% Выгода</p>
       <p class="promo-sub">при оформлении фитнес-подписки</p>
       <div class="sc-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#181818"/><path d="M15 33L33 15M33 15H21M33 15V27" stroke="#FED800" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
@@ -2061,52 +2277,60 @@
     <li><a href="trainers.html">Тренеры</a></li>
     <li><a href="#faq">Вопросы</a></li>
     <li><a href="blog.html">Блог</a></li>
-    <li><a href="#jobs">Вакансии</a></li>
-    <li><a href="#cta">Контакты</a></li>
+    <li><a href="#contacts">Контакты</a></li>
     <li><a href="schedule.html">Расписание</a></li>
-    <li><a href="#cta" class="hmn-cta">Связаться</a></li>
+    <li><a href="#cta" class="hmn-cta" onclick="openLeadModal('Мобильное меню — Связаться'); return false;">Связаться</a></li>
   </ul>
 </div>
 
 <!-- ═══════════════════════════════════════════════════
      2. ФИЛОСОФИЯ
 ═══════════════════════════════════════════════════ -->
-<div class="phil-dumbbell">
-  <div class="phil-dumbbell-rot">
-    <div class="db-float">
-      <img src="img/dumbbell-figma.webp" alt="" loading="lazy">
-    </div>
-  </div>
-</div>
 <section class="philosophy" id="about">
 
+  <div class="phil-dumbbell">
+    <div class="phil-dumbbell-rot">
+      <div class="db-float">
+        <img src="img/dumbbell-figma.webp" alt="" loading="lazy">
+      </div>
+    </div>
+  </div>
+
   <!--
-    Все left = центр элемента (из Figma с -translate-x-1/2).
-    top = позиция в пикселях относительно начала секции философии.
-    Figma-top − 1047 (конец hero) = section-top.
-      "Не важно, с чего"   center-x=511,  page-top=1224 → sec=177
-      "ты начинаешь —"     center-x=1454, page-top=1224 → sec=177
-      "важен результат,"   center-x=462,  page-top=1303 → sec=256
-      "к которому ты идёшь." center-x=1394 page-top=1303 → sec=256
-      "Мы даём темп,"      center-x=462,  page-top=1381 → sec=334
-      "держим дисциплину"  center-x=1328, page-top=1381 → sec=334
-      "и ведём"            center-x=412,  page-top=1459 → sec=412
-      "тебя к результатам." center-x=1263 page-top=1459 → sec=412
+    Все left = центр элемента (из Figma с -translate-x-1/2),
+    top = позиция в пикселях от начала секции.
+
+    Раскладка по предложениям, а не по строкам: гантеля даёт такой
+    разрыв посередине, что текст читают колонками сверху вниз, а не
+    строками. Поэтому слева целиком первое предложение, справа —
+    второе. Обе половины заканчиваются точкой, и при любом порядке
+    чтения смысл сохраняется.
+
+    Правый край левой колонки и левый край правой идут по силуэту
+    гантели (замерено по пикселям, зазор ~32px слева и ~14px справа):
+      top=177  гантеля 849–1145
+      top=256  гантеля 794–984
+      top=334  гантеля 742–932
+      top=412  гантеля 588–879
+      top=490  гантеля 550–867
   -->
-  <span class="pt l56" style="left:511px;  top:177px;">Не важно, с чего</span>
-  <span class="pt l56" style="left:1454px; top:177px;">ты начинаешь —</span>
-  <span class="pt"     style="left:462px;  top:256px;">важен результат,</span>
-  <span class="pt"     style="left:1394px; top:256px;">к которому ты идёшь.</span>
-  <span class="pt"     style="left:462px;  top:334px;">Мы даём темп,</span>
-  <span class="pt"     style="left:1328px; top:334px;">держим дисциплину</span>
-  <span class="pt"     style="left:412px;  top:412px;">и ведём</span>
-  <span class="pt"     style="left:1263px; top:412px;">тебя к результатам.</span>
+  <!-- первое предложение -->
+  <span class="pt l56" style="left:513px;  top:177px;">Не важно, с чего</span>
+  <span class="pt"     style="left:471px;  top:256px;">ты начинаешь —</span>
+  <span class="pt"     style="left:405px;  top:334px;">важен результат,</span>
+  <span class="pt"     style="left:350px;  top:412px;">к которому</span>
+  <span class="pt"     style="left:336px;  top:490px;">ты идёшь.</span>
+  <!-- второе предложение -->
+  <span class="pt l56" style="left:1424px; top:177px;">Мы даём темп,</span>
+  <span class="pt"     style="left:1413px; top:256px;">держим дисциплину и</span>
+  <span class="pt"     style="left:1409px; top:334px;">ведём тебя к результатам.</span>
+  <img class="phil-logo" src="img/logo-wordmark.svg" alt="" aria-hidden="true" loading="lazy">
 
   <div class="phil-text-mobile">
     <div class="ptm-dumbbell"><div class="db-float"><div class="db-inner"><img src="img/dumbbell-figma.webp" alt="" loading="lazy"></div></div></div>
     <span class="ptm" style="top:0px;left:calc(50% - 67.5px)">не важно, с</span>
     <span class="ptm" style="top:0px;left:calc(50% + 119.5px)">чего</span>
-    <span class="ptm" style="top:27px;left:calc(50% - 67.5px)">ты начинаешь</span>
+    <span class="ptm" style="top:27px;left:calc(50% - 73px)">ты начинаешь —</span>
     <span class="ptm" style="top:27px;left:calc(50% + 94.5px)">важен</span>
     <span class="ptm" style="top:54px;left:calc(50% - 74.5px)">результат, к</span>
     <span class="ptm" style="top:54px;left:calc(50% + 102.5px)">которому</span>
@@ -2217,16 +2441,25 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 7 лет</p>
             <p class="tr-name">Александр Бучминский</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
-          <div class="tr-photo-wrap"><img class="tr-photo" src="img/trainer-2.webp" alt="Нененко Остап" loading="lazy"></div>
+          <div class="tr-photo-wrap"><div class="tr-photo-stub"><span>ПМ</span></div></div>
           <div class="tr-overlay"></div>
           <div class="tr-info">
-            <p class="tr-exp">Стаж: 4 года</p>
-            <p class="tr-name">Нененко Остап</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <p class="tr-exp">Опыт: с 2018 года</p>
+            <p class="tr-name">Петросян Микаел</p>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
+          </div>
+        </div>
+        <div class="tr-card">
+          <div class="tr-photo-wrap"><div class="tr-photo-stub"><span>КН</span></div></div>
+          <div class="tr-overlay"></div>
+          <div class="tr-info">
+            <p class="tr-exp">Опыт: с 2024 года</p>
+            <p class="tr-name">Калюжная Наталья</p>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2235,7 +2468,7 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 4 года</p>
             <p class="tr-name">Верба Дарья</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2244,7 +2477,7 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 2 года</p>
             <p class="tr-name">Кириченко Валерия</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2254,7 +2487,7 @@
             <p class="tr-role">Старший тренер</p>
             <p class="tr-exp">Стаж: 25 лет</p>
             <p class="tr-name">Ежов Максим</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2263,7 +2496,7 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 15 лет</p>
             <p class="tr-name">Баранов Евгений</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2272,7 +2505,7 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 2 года</p>
             <p class="tr-name">Гунько Дарья</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
         <div class="tr-card">
@@ -2281,7 +2514,7 @@
           <div class="tr-info">
             <p class="tr-exp">Стаж: 6 лет</p>
             <p class="tr-name">Пичиуз Роман</p>
-            <button class="btn-book" onclick="location.href='#cta'">Записаться</button>
+            <button class="btn-book" type="button" onclick="openTrainerModal(this.closest('.tr-card').querySelector('.tr-name').textContent)">Записаться</button>
           </div>
         </div>
       </div>
@@ -2335,10 +2568,10 @@
   <div class="faq-list">
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">
-        <span class="faq-q-text">Могу ли я прийти на пробное занятие?</span>
+        <span class="faq-q-text">Можно ли прийти в клуб на разовое посещение?</span>
         <span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#181818" stroke-width="2.2" stroke-linecap="round"/></svg></span>
       </div>
-      <div class="faq-answer"><div class="faq-answer-inner">Да, первое пробное занятие — бесплатно. Запишитесь через форму на сайте или позвоните нам, и мы подберём удобное время. Тренер познакомит вас с залом, составит стартовую программу и ответит на все вопросы.</div></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Да, для этого есть гостевой визит — 1100 ₽. Он даёт доступ в клуб на одно посещение: тренажёрный зал, групповая тренировка по расписанию, раздевалки и душевые. Если после визита вы покупаете абонемент, стоимость гостевого визита засчитывается в оплату.</div></div>
     </div>
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">
@@ -2352,7 +2585,7 @@
         <span class="faq-q-text">Какие виды абонементов доступны?</span>
         <span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#181818" stroke-width="2.2" stroke-linecap="round"/></svg></span>
       </div>
-      <div class="faq-answer"><div class="faq-answer-inner">Мы предлагаем разовые посещения, а также абонементы на 1 месяц, 3 месяца и 1 год. Есть специальные условия для студентов, пенсионеров и семей. Персональные тренировки можно добавить к любому тарифу.</div></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Базовые абонементы — на 1, 3, 6, 9 и 12 месяцев. По действующим акциям срок карты может быть больше — от 1 до 16 месяцев, в зависимости от условий акции. Также есть гостевой визит для разового посещения. Персональные тренировки можно добавить к любому абонементу.</div></div>
     </div>
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">
@@ -2366,14 +2599,14 @@
         <span class="faq-q-text">Есть ли возможность заморозить абонемент?</span>
         <span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#181818" stroke-width="2.2" stroke-linecap="round"/></svg></span>
       </div>
-      <div class="faq-answer"><div class="faq-answer-inner">Да. Абонемент можно заморозить до 30 дней за период действия. Заморозка оформляется на рецепции при предъявлении документа, подтверждающего причину (отпуск, больничный и т.п.).</div></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Заморозка предусмотрена не во всех абонементах — её наличие и количество дней зависят от вида карты. Срок заморозки — от 5 дней и до полного лимита, заложенного в абонемент. Оформляется на рецепции клуба, документы и справки для этого не нужны.</div></div>
     </div>
     <div class="faq-item">
       <div class="faq-question" onclick="toggleFaq(this)">
         <span class="faq-q-text">Есть ли парковка рядом с клубом?</span>
         <span class="faq-icon"><svg viewBox="0 0 20 20" fill="none"><path d="M10 4v12M4 10h12" stroke="#181818" stroke-width="2.2" stroke-linecap="round"/></svg></span>
       </div>
-      <div class="faq-answer"><div class="faq-answer-inner">Да, рядом с клубом есть бесплатная парковка на 40 мест. В часы пик (18:00–20:00) рекомендуем приезжать заблаговременно или воспользоваться общественным транспортом — остановка в 5 минутах ходьбы.</div></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Да, рядом с клубом есть бесплатная парковка на 40 мест. В часы пик (18:00–20:00) мест бывает меньше — рекомендуем приезжать заблаговременно.</div></div>
     </div>
   </div>
 </section>
@@ -2425,12 +2658,12 @@
     <a href="blog.html" class="blog-all-link" data-reveal>Все статьи →</a>
   </div>
   <div class="blog-grid">
-    <a href="blog-1.html" class="blog-card" data-reveal data-delay="0">
-      <img class="blog-card-img" src="img/card-blog1.webp" alt="Как правильно начать тренировки">
+    <a href="news/nuzhen-li-novichku-personalnyy-trener/" class="blog-card" data-reveal data-delay="0">
+      <img class="blog-card-img" src="img/news-personal-trainer.webp" alt="Занятие с персональным тренером" loading="lazy">
       <div class="blog-card-body">
-        <span class="blog-tag">Новичкам</span>
-        <p class="blog-card-title">Как начать тренироваться и не бросить через неделю</p>
-        <span class="blog-card-date">12 мая 2025</span>
+        <span class="blog-tag">Тренеры</span>
+        <p class="blog-card-title">Нужен ли новичку персональный тренер: честный разбор</p>
+        <span class="blog-card-date">26 июля 2026</span>
       </div>
     </a>
     <a href="blog-2.html" class="blog-card" data-reveal data-delay="100">
@@ -2453,58 +2686,68 @@
 </section>
 
 <!-- ═══════════════════════════════════════════════════
-     10. ВАКАНСИИ
+     10. РАБОТА У НАС
 ═══════════════════════════════════════════════════ -->
-<section class="jobs-section" id="jobs">
-  <div class="jobs-header">
-    <h2 class="jobs-title" data-reveal>ВАКАНСИИ</h2>
-    <span class="jobs-count" data-reveal>4 открытые позиции</span>
-  </div>
-  <div class="jobs-list">
-    <div class="job-item" data-reveal data-delay="0">
-      <div class="job-left">
-        <p class="job-title">Персональный тренер</p>
-        <div class="job-tags">
-          <span class="job-tag">Полная занятость</span>
-          <span class="job-tag">Краснодар</span>
-          <span class="job-tag">от 80 000 ₽</span>
-        </div>
-      </div>
-      <button class="job-apply" onclick="openJobModal('Персональный тренер')">Откликнуться</button>
+<!-- Секция скрыта по просьбе клиента: вопрос назначения страницы не решён. Вернуть — убрать hidden. -->
+<section class="jobs-section" id="jobs" hidden>
+  <div class="jobs-invite">
+    <div class="jobs-invite-left">
+      <span class="jobs-eyebrow" data-reveal>Команда</span>
+      <h2 class="jobs-title" data-reveal data-delay="60">Хотите работать с нами?</h2>
+      <p class="jobs-lead" data-reveal data-delay="120">Мы расширяем команду и ищем тренеров и администраторов, для которых результат клиента важнее отработанных часов.</p>
+      <ul class="jobs-points" data-reveal data-delay="180">
+        <li>Зал в центре Краснодара, 22+ направления и постоянный поток клиентов — искать их самому не нужно</li>
+        <li>9 тренеров в команде: обмен опытом вместо конкуренции за клиента</li>
+        <li>Гибкий график в режиме клуба — с 07:00 до 23:00, семь дней в неделю</li>
+      </ul>
     </div>
-    <div class="job-item" data-reveal data-delay="60">
-      <div class="job-left">
-        <p class="job-title">Тренер по групповым программам</p>
-        <div class="job-tags">
-          <span class="job-tag">Полная / частичная</span>
-          <span class="job-tag">Краснодар</span>
-          <span class="job-tag">от 60 000 ₽</span>
+
+    <form class="jobs-form" id="jobsForm" data-tg="off" data-reveal data-delay="120" onsubmit="return submitJobsForm(event)" novalidate>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+      <div class="jobs-form-body">
+        <h3 class="jf-title">Заявка в команду</h3>
+        <p class="jf-note">Оставьте контакты — посмотрим опыт и позвоним в течение рабочего дня.</p>
+
+        <div class="job-modal-field">
+          <label class="job-modal-label" for="jfName">Имя и фамилия *</label>
+          <input class="job-modal-input" id="jfName" name="name" type="text" placeholder="Иван Иванов" autocomplete="name">
         </div>
-      </div>
-      <button class="job-apply" onclick="openJobModal('Тренер по групповым программам')">Откликнуться</button>
-    </div>
-    <div class="job-item" data-reveal data-delay="120">
-      <div class="job-left">
-        <p class="job-title">Администратор клуба</p>
-        <div class="job-tags">
-          <span class="job-tag">Полная занятость</span>
-          <span class="job-tag">Краснодар</span>
-          <span class="job-tag">от 45 000 ₽</span>
+        <div class="job-modal-field">
+          <label class="job-modal-label" for="jfPhone">Номер телефона *</label>
+          <input class="job-modal-input" id="jfPhone" name="phone" type="tel" placeholder="+7 (900) 000-00-00" autocomplete="tel">
         </div>
-      </div>
-      <button class="job-apply" onclick="openJobModal('Администратор клуба')">Откликнуться</button>
-    </div>
-    <div class="job-item" data-reveal data-delay="180">
-      <div class="job-left">
-        <p class="job-title">Специалист по продажам абонементов</p>
-        <div class="job-tags">
-          <span class="job-tag">Полная занятость</span>
-          <span class="job-tag">Краснодар</span>
-          <span class="job-tag">от 55 000 ₽ + %</span>
+        <div class="job-modal-field">
+          <label class="job-modal-label" for="jfRole">Кем хотите работать</label>
+          <input class="job-modal-input" id="jfRole" name="role" type="text" placeholder="Персональный тренер, администратор…">
         </div>
+        <div class="job-modal-field">
+          <label class="job-modal-label">Резюме (необязательно)</label>
+          <label class="job-modal-file-label" for="jfFile">
+            <span class="file-icon">📎</span>
+            <span class="file-text">
+              <strong id="jfFileName">Прикрепить резюме</strong>
+              PDF, DOC, DOCX — до 5 МБ
+            </span>
+          </label>
+          <input type="file" id="jfFile" accept=".pdf,.doc,.docx" onchange="handleResumeFile(this,'jfFileName')">
+        </div>
+
+        <label class="consent" for="jfConsent">
+          <input class="consent-box" type="checkbox" id="jfConsent">
+          <span class="consent-mark" aria-hidden="true"></span>
+          <span class="consent-text">Я согласен на обработку персональных данных и принимаю условия <a href="privacy.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>
+        </label>
+
+        <button class="job-modal-submit" type="submit">Отправить заявку</button>
+        <p class="form-status" id="jfStatus" role="status" aria-live="polite"></p>
       </div>
-      <button class="job-apply" onclick="openJobModal('Специалист по продажам абонементов')">Откликнуться</button>
-    </div>
+
+      <div class="jobs-form-success">
+        <div class="success-icon">✓</div>
+        <h3>Заявка отправлена</h3>
+        <p>Мы получили ваши контакты и свяжемся в ближайшее время.</p>
+      </div>
+    </form>
   </div>
 </section>
 
@@ -2516,17 +2759,26 @@
 
   <div class="cta-title-wrap">
     <p class="cta-zapishy" data-reveal data-delay="0">запишись на</p>
-    <p class="cta-probnuyu" data-reveal data-delay="50">пробную</p>
-    <p class="cta-trenirovku" data-reveal data-delay="100">тренировку</p>
+    <p class="cta-probnuyu" data-reveal data-delay="50">гостевой</p>
+    <p class="cta-trenirovku" data-reveal data-delay="100">визит</p>
   </div>
 
-  <form class="cta-form" onsubmit="return false;">
-    <input class="form-input" data-reveal data-delay="100" type="text"  placeholder="Имя">
-    <input class="form-input" data-reveal data-delay="200" type="tel"   placeholder="+7 (000) 000-00-00">
-    <button class="btn-submit" type="submit">Записаться</button>
+  <form class="cta-form" id="ctaForm" data-tg="off" onsubmit="return submitCtaForm(event)" novalidate>
+    <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+    <input class="form-input" id="ctaName" data-reveal data-delay="100" type="text" placeholder="Имя" autocomplete="name" aria-label="Имя">
+    <input class="form-input" id="ctaPhone" data-reveal data-delay="200" type="tel" placeholder="+7 (000) 000-00-00" autocomplete="tel" inputmode="tel" aria-label="Номер телефона">
+    <button class="btn-submit" id="ctaSubmit" type="submit">Записаться</button>
+    <label class="consent" for="ctaConsent">
+      <input class="consent-box" type="checkbox" id="ctaConsent">
+      <span class="consent-mark" aria-hidden="true"></span>
+      <span class="consent-text">Я согласен на обработку персональных данных и принимаю условия <a href="privacy.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>
+    </label>
+    <p class="form-status" id="ctaStatus" role="status" aria-live="polite"></p>
+    <p class="cta-member">Уже занимаетесь у нас? <button class="cta-member-link" type="button" onclick="openMemberModal('Блок записи — уже занимаюсь')">Записаться к своему тренеру</button></p>
   </form>
-  <div class="cta-map" data-reveal data-delay="200">
+  <div class="cta-map" id="contacts" data-reveal data-delay="200">
     <iframe
+      id="ctaMapFrame"
       src="https://yandex.ru/map-widget/v1/?ll=39.027568%2C45.027413&z=16&pt=39.027568%2C45.027413%2Cpm2rdm&l=map&lang=ru_RU"
       style="position:absolute;inset:0;width:100%;height:100%;border:0;"
       allowfullscreen
@@ -2542,15 +2794,16 @@
     <div class="footer-bottom">
       <div class="footer-addr">
         Краснодар, ул. Селезнёва, 87<br>
-        ежедневно: 07:00–23:00
-      </div>
+        ежедневно: 07:00–23:00<br>
+        <a class="footer-tel" href="tel:+79675554397">+7 (967) 555-43-97</a><br>
+        <a class="footer-tel" href="mailto:octagon.fit@gmail.com">octagon.fit@gmail.com</a></div>
       <nav class="footer-nav">
         <a href="#about">О нас</a>
         <a href="trainers.html">Тренеры</a>
         <a href="#faq">Вопросы</a>
         <a href="schedule.html">Расписание</a>
       </nav>
-      <a class="footer-privacy" href="#">Политика конфиденциальности</a>
+      <a class="footer-privacy" href="privacy.html">Политика конфиденциальности</a>
     </div>
     <div class="footer-credit">
       <span class="footer-credit-text">разработано</span>
@@ -2686,6 +2939,42 @@
   applyZoom();
   window.addEventListener('resize', function() { applyZoom(); rebuildCarousel(); });
 
+  /* Виджет Яндекс.Карт измеряет свой контейнер один раз при загрузке —
+     если к этому моменту масштаб/раскладка страницы ещё не устоялись,
+     карта не заполняет контейнер целиком. Форсируем перезагрузку виджета
+     уже после полной стабилизации страницы, чтобы он замерил себя заново. */
+  (function() {
+    var mapFrame = document.getElementById('ctaMapFrame');
+    if (!mapFrame) return;
+    var src = mapFrame.getAttribute('src');
+    function reloadMap() {
+      mapFrame.src = 'about:blank';
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() { mapFrame.src = src; });
+      });
+    }
+    window.addEventListener('load', function() { setTimeout(reloadMap, 400); });
+  })();
+
+  /* «Контакты» — прокрутка к карте и адресу.
+     Повторяем прокрутку: картинки выше грузятся лениво и сдвигают страницу. */
+  (function() {
+    var links = document.querySelectorAll('a[href="#contacts"]');
+    if (!links.length) return;
+    Array.prototype.forEach.call(links, function(link) {
+      link.addEventListener('click', function(e) {
+        var target = document.getElementById('contacts');
+        if (!target) return;
+        e.preventDefault();
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function go() { target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
+        go();
+        setTimeout(go, 450);
+        setTimeout(go, 950);
+      });
+    });
+  })();
+
   /* Гамбургер-меню */
   (function() {
     var burger = document.getElementById('hBurger');
@@ -2695,12 +2984,14 @@
     function openNav() {
       nav.classList.add('open');
       burger.classList.add('open');
+      document.body.classList.add('nav-open');
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
     }
     function closeNav() {
       nav.classList.remove('open');
       burger.classList.remove('open');
+      document.body.classList.remove('nav-open');
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }
@@ -2997,85 +3288,15 @@
   }
 </script>
 
-<!-- JOB APPLICATION MODAL -->
-<div class="job-modal-overlay" id="jobModalOverlay" onclick="closeJobModal(event)">
-  <div class="job-modal" id="jobModal">
-    <button class="job-modal-close" onclick="closeJobModal(null)" aria-label="Закрыть">✕</button>
-    <div id="jobModalForm">
-      <p class="job-modal-position" id="jobModalPosition">Вакансия</p>
-      <h2 class="job-modal-title" id="jobModalJobTitle">Персональный тренер</h2>
-      <div class="job-modal-field">
-        <label class="job-modal-label" for="jobName">Имя и фамилия *</label>
-        <input class="job-modal-input" id="jobName" type="text" placeholder="Иван Иванов" autocomplete="name">
-      </div>
-      <div class="job-modal-field">
-        <label class="job-modal-label" for="jobPhone">Номер телефона *</label>
-        <input class="job-modal-input" id="jobPhone" type="tel" placeholder="+7 (900) 000-00-00" autocomplete="tel">
-      </div>
-      <div class="job-modal-field">
-        <label class="job-modal-label">Резюме (необязательно)</label>
-        <label class="job-modal-file-label" for="jobFileInput" id="jobFileLabel">
-          <span class="file-icon">📎</span>
-          <span class="file-text">
-            <strong id="jobFileName">Прикрепить резюме</strong>
-            PDF, DOC, DOCX — до 5 МБ
-          </span>
-        </label>
-        <input type="file" id="jobFileInput" accept=".pdf,.doc,.docx" onchange="handleJobFile(this)">
-      </div>
-      <button class="job-modal-submit" onclick="submitJobForm()">Отправить отклик</button>
-    </div>
-    <div class="job-modal-success" id="jobModalSuccess" style="display:none">
-      <div class="success-icon">✓</div>
-      <h3>Отклик отправлен!</h3>
-      <p>Мы получили вашу заявку и свяжемся с вами в ближайшее время.</p>
-    </div>
-  </div>
-</div>
-
-<script>
-function openJobModal(jobTitle) {
-  document.getElementById('jobModalJobTitle').textContent = jobTitle;
-  document.getElementById('jobModalForm').style.display = '';
-  document.getElementById('jobModalSuccess').style.display = 'none';
-  document.getElementById('jobName').value = '';
-  document.getElementById('jobPhone').value = '';
-  document.getElementById('jobFileName').textContent = 'Прикрепить резюме';
-  document.getElementById('jobName').classList.remove('error');
-  document.getElementById('jobPhone').classList.remove('error');
-  document.getElementById('jobModalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
-  document.documentElement.style.overflow = 'hidden';
-}
-function closeJobModal(e) {
-  if (e && e.target !== document.getElementById('jobModalOverlay')) return;
-  document.getElementById('jobModalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-  document.documentElement.style.overflow = '';
-}
-function handleJobFile(input) {
-  var name = input.files[0] ? input.files[0].name : 'Прикрепить резюме';
-  document.getElementById('jobFileName').textContent = name;
-}
-function submitJobForm() {
-  var name = document.getElementById('jobName');
-  var phone = document.getElementById('jobPhone');
-  var ok = true;
-  if (!name.value.trim()) { name.classList.add('error'); ok = false; } else { name.classList.remove('error'); }
-  if (!phone.value.trim()) { phone.classList.add('error'); ok = false; } else { phone.classList.remove('error'); }
-  if (!ok) return;
-  document.getElementById('jobModalForm').style.display = 'none';
-  document.getElementById('jobModalSuccess').style.display = '';
-  setTimeout(function() { closeJobModal(null); }, 3000);
-}
-</script>
-
 <div class="cookie-banner" id="cookieBanner">
-  <p class="cookie-text">Мы используем файлы cookie для обеспечения нормальной работы сайта и анализа трафика. Продолжая пользоваться сайтом, вы соглашаетесь с нашей <a href="#">политикой конфиденциальности</a>.</p>
+  <p class="cookie-text">Мы используем файлы cookie для обеспечения нормальной работы сайта и анализа трафика. Продолжая пользоваться сайтом, вы соглашаетесь с нашей <a href="privacy.html">политикой конфиденциальности</a>.</p>
   <div class="cookie-actions">
     <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Принять</button>
     <button class="cookie-btn cookie-decline" onclick="declineCookies()">Отклонить</button>
   </div>
 </div>
+<!-- окно акции всплывает само только на главной -->
+<script>window.OCT_PROMO_AUTO = true;</script>
+<script defer src="assets/lead-form.js"></script>
 </body>
 </html>
