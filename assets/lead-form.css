@@ -450,6 +450,7 @@ button.is-sending { opacity: 0.6; pointer-events: none; }
     width: calc(100% + 48px);
     margin: 0 -24px 20px;
     aspect-ratio: 3 / 2;
+    object-position: var(--oct-banner-pos-m, center top);
     border-radius: 20px 20px 0 0;
   }
   .job-modal.is-promo { padding-bottom: 28px; }

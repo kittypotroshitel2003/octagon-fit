@@ -28,7 +28,7 @@
   <meta property="og:url" content="https://octagon-fit.ru/">
   <meta property="og:locale" content="ru_RU">
   <script defer src="assets/analytics.js"></script>
-  <link rel="stylesheet" href="assets/lead-form.css">
+  <link rel="stylesheet" href="assets/lead-form.css?v=20261005b">
   <script>
     /* Масштаб десктопа должен применяться ДО парсинга iframe карты,
        иначе Яндекс.Карты измеряют контейнер по неверному (немасштабированному) размеру */
@@ -2257,9 +2257,9 @@
     </div>
 
     <!-- Карточка: акция -->
-    <div class="stat-card sc-promo" role="button" tabindex="0" onclick="openLeadModal('Карточка «50% выгода»')">
-      <p class="promo-big">50% Выгода</p>
-      <p class="promo-sub">при оформлении фитнес-подписки</p>
+    <div class="stat-card sc-promo" role="button" tabindex="0" aria-label="Открыть текущую акцию" onclick="openActivePromo('Карточка «Акции клуба»')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+      <p class="promo-big">Акции клуба</p>
+      <p class="promo-sub">выгодные условия на абонементы</p>
       <div class="sc-arrow"><svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="24" cy="24" r="24" fill="#181818"/><path d="M15 33L33 15M33 15H21M33 15V27" stroke="#FED800" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     </div>
   </div>
@@ -2445,7 +2445,7 @@
           </div>
         </div>
         <div class="tr-card">
-          <div class="tr-photo-wrap"><div class="tr-photo-stub"><span>ПМ</span></div></div>
+          <div class="tr-photo-wrap"><img class="tr-photo" src="img/trainer-petrosyan.webp" alt="Петросян Микаел" loading="lazy"></div>
           <div class="tr-overlay"></div>
           <div class="tr-info">
             <p class="tr-exp">Опыт: с 2018 года</p>
@@ -2454,7 +2454,7 @@
           </div>
         </div>
         <div class="tr-card">
-          <div class="tr-photo-wrap"><div class="tr-photo-stub"><span>КН</span></div></div>
+          <div class="tr-photo-wrap"><img class="tr-photo" src="img/trainer-kaluzhnaya.webp" alt="Калюжная Наталья" loading="lazy"></div>
           <div class="tr-overlay"></div>
           <div class="tr-info">
             <p class="tr-exp">Опыт: с 2024 года</p>
@@ -3297,6 +3297,6 @@
 </div>
 <!-- окно акции всплывает само только на главной -->
 <script>window.OCT_PROMO_AUTO = true;</script>
-<script defer src="assets/lead-form.js"></script>
+<script defer src="assets/lead-form.js?v=20261005b"></script>
 </body>
 </html>

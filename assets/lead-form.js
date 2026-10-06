@@ -310,13 +310,15 @@ var OCT_MODAL_PRESETS = {
   },
   promo: {
     eyebrow: '',
-    title: 'Вторая карта в подарок — тренируйтесь вместе!',
+    title: 'Твой старт — безлимит за 8 600 ₽',
     sub: [
-      'Вдвоём больше мотивации! С 17 по 30 сентября в OCTAGON-FIT действует акция: вторая клубная карта — в подарок.',
-      'Всего 35 карт по акции. Оставьте заявку — расскажем условия и поможем с оформлением.'
+      'Начни с себя — добавь в свой ритм больше движения и энергии. Безлимитный абонемент в OCTAGON-FIT за 8 600 ₽ — повод вернуться к тренировкам или впервые прийти в зал.',
+      'Оставь заявку — расскажем об условиях акции и поможем оформить абонемент.'
     ],
-    banner: '/img/promo-second-card.webp',
-    bannerAlt: 'Акция «Вторая карта в подарок»: 17–30 сентября, всего 35 карт',
+    banner: '/img/promo-start-8600.webp',
+    bannerAlt: 'Акция: безлимитный абонемент за 8 600 ₽',
+    /* на телефоне кадр уже — сдвигаем его вниз, чтобы цена не обрезалась */
+    bannerPosMobile: 'center 30%',
     submit: 'Отправить',
     file: false,
     successTitle: 'Заявка отправлена',
@@ -379,6 +381,7 @@ function octSetBanner(preset) {
   if (img.getAttribute('src') !== preset.banner) {
     img.setAttribute('src', preset.banner);
     img.setAttribute('alt', preset.bannerAlt || '');
+    img.style.setProperty('--oct-banner-pos-m', preset.bannerPosMobile || 'center top');
   }
   img.hidden = false;
 }
@@ -532,14 +535,21 @@ function openMemberModal(source) {
    until и key (ключ — чтобы показ начался заново).
 ═══════════════════════════════════════════════════ */
 var OCT_PROMO = {
-  key: 'oct-promo-second-card',
-  until: '2026-09-30T23:59:59+03:00',
+  key: 'oct-promo-start-8600',
+  until: '2026-10-10T23:59:59+03:00',
   repeatAfterDays: 7,
   source: 'Автопопап акции'
 };
 
 function openPromoModal(source) {
-  octOpenModal('promo', null, source || 'Акция «Вторая карта в подарок»');
+  octOpenModal('promo', null, source || 'Акция «Безлимит за 8 600 ₽»');
+}
+
+/* Кнопки «акции» на сайте: пока акция идёт — её окно,
+   между акциями — обычная заявка, чтобы не показать прошедшую */
+function openActivePromo(source) {
+  if (octPromoIsLive()) openPromoModal(source);
+  else openLeadModal(source);
 }
 
 function octPromoIsLive() {
@@ -642,7 +652,7 @@ function submitOctModal(e) {
 
   var type = 'Запись на гостевой визит';
   if (octModalMode === 'job') type = 'Отклик на вакансию';
-  else if (octModalMode === 'promo') type = 'Акция «Вторая карта в подарок»';
+  else if (octModalMode === 'promo') type = 'Акция «Безлимит за 8 600 ₽»';
   else if (member) type = 'Запись к тренеру (действующий клиент)';
 
   sendLead({
