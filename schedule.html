@@ -263,32 +263,6 @@
     .sch-empty { min-height: 80px; }
 
     /* ── Легенда ── */
-    .sch-legend {
-      padding: 0 120px 60px;
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-    .sch-legend-label {
-      font-size: 14px;
-      color: var(--gray);
-      letter-spacing: -0.02em;
-    }
-    .sch-legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-    }
-    .sch-legend-dot {
-      width: 14px; height: 14px;
-      border-radius: 4px;
-      flex-shrink: 0;
-    }
-    .sch-legend-dot.dark { background: var(--charcoal); border: 1px solid rgba(255,255,255,0.15); }
-    .sch-legend-dot.yellow { background: var(--yellow); }
-
     /* Правила записи на групповые */
     .sch-rules {
       margin: 0 120px 48px;
@@ -342,7 +316,6 @@
       .sch-meta-label { font-size: 12px; }
       .sch-filters { padding: 0 36px 32px; flex-wrap: wrap; gap: 8px; }
       .sch-filter-btn { padding: 9px 20px; font-size: 14px; }
-      .sch-legend { padding: 0 36px 32px; flex-wrap: wrap; gap: 20px; }
       .sch-rules { margin: 0 36px 36px; padding: 24px; }
       .sch-table-wrap { padding: 0 36px 80px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .sch-table { min-width: 700px; }
@@ -416,11 +389,9 @@
       .sch-meta-label { font-size: 11px; }
       .sch-filters { padding: 0 20px 20px; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
       .sch-filter-btn { padding: 8px 16px; font-size: 13px; white-space: nowrap; }
-      .sch-legend { padding: 0 20px 20px; gap: 12px; flex-wrap: wrap; }
       .sch-rules { margin: 0 20px 28px; padding: 20px; }
       .sch-rules-title { font-size: 16px; }
       .sch-rules-list { font-size: 14px; }
-      .sch-legend-label { width: 100%; }
       .sch-table-wrap { padding: 0 20px 56px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .sch-table { min-width: 560px; }
       .sch-table thead th { font-size: 11px; padding-bottom: 12px; }
@@ -482,14 +453,6 @@
   <button class="sch-filter-btn" onclick="filterDay('fri', this)">Пятница</button>
   <button class="sch-filter-btn" onclick="filterDay('sat', this)">Суббота</button>
   <button class="sch-filter-btn" onclick="filterDay('sun', this)">Воскресенье</button>
-</div>
-
-<div class="sch-legend">
-  <span class="sch-legend-label">Обозначения:</span>
-  <div class="sch-legend-item">
-    <div class="sch-legend-dot dark"></div>
-    Входит в абонемент
-  </div>
 </div>
 
 <div class="sch-rules">
