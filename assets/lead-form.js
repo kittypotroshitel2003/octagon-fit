@@ -153,8 +153,11 @@ function octMaskPhone(e) {
     rest = rest.slice(0, before - 1) + rest.slice(before);
     before--;
   }
-  /* Первая набранная 8 — привычное «8-918…»: это код страны, а не начало номера */
-  if (!el._octPrev && !deleting && rest.length === 1 && rest === '8') { rest = ''; before = 0; }
+  /* «8-918…», «8-800…»: если за первой 8 идёт 9 или 8 — это код страны.
+     Таких кодов после +7 не бывает, а городские вроде 861 остаются целыми. */
+  if (!deleting && el._octPrev === '8' && /^8[89]$/.test(rest)) { rest = rest.slice(1); before = Math.max(0, before - 1); }
+  /* «+7» набрали поверх уже подставленного +7 — кодов на 7 после +7 нет */
+  if (!deleting && !el._octPrev && rest === '7') { rest = ''; before = 0; }
   el._octPrev = rest;
   if (deleting && !rest) { el.value = ''; return; }
   var formatted = octFormatPhone(rest);
