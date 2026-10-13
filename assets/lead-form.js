@@ -5,7 +5,7 @@
    который пересылает заявку на почту и в Telegram-группу.
 
    Публичный API:
-     openLeadModal(source)   — окно записи на гостевой визит
+     openLeadModal(source)   — окно заявки на консультацию
      openJobModal(position)  — окно отклика на вакансию
      sendLead(payload, file) — отправка произвольной заявки
 ═══════════════════════════════════════════════════ */
@@ -20,9 +20,9 @@
     '',
     '    <form id="octModalForm" data-tg="off" onsubmit="return submitOctModal(event)" novalidate>',
     '      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">',
-    '      <p class="job-modal-position" id="octModalEyebrow">Запись</p>',
-    '      <h2 class="job-modal-title" id="octModalTitle">Гостевой визит</h2>',
-    '      <p class="job-modal-sub" id="octModalSub">Оставьте контакты — подберём удобное время и тренера под вашу цель.</p>',
+    '      <p class="job-modal-position" id="octModalEyebrow">Заявка</p>',
+    '      <h2 class="job-modal-title" id="octModalTitle">Получить консультацию</h2>',
+    '      <p class="job-modal-sub" id="octModalSub">Оставьте контакты — перезвоним, расскажем об абонементах и подберём тренера под вашу цель.</p>',
     '',
     '      <div class="oct-switch" id="octSwitch" data-active="first" role="group" aria-label="Вы у нас впервые?">',
     '        <span class="oct-switch-thumb" aria-hidden="true"></span>',
@@ -69,7 +69,7 @@
     '        <span class="consent-text">Я согласен на обработку персональных данных и принимаю условия <a href="/privacy.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>',
     '      </label>',
     '',
-    '      <button class="job-modal-submit" type="submit" id="octModalSubmit">Записаться</button>',
+    '      <button class="job-modal-submit" type="submit" id="octModalSubmit">Отправить заявку</button>',
     '      <p class="form-status" id="octStatus" role="status" aria-live="polite"></p>',
     '    </form>',
     '',
@@ -115,6 +115,71 @@ function octHp(formId) {
 
 function octDigits(v) { return (v || '').replace(/\D/g, ''); }
 
+/* ── Телефон: только российские номера, +7 и ровно 10 цифр ── */
+function octPhoneValid(v) {
+  var d = octDigits(v);
+  return d.length === 11 && d.charAt(0) === '7';
+}
+
+/* Цифры номера без кода страны: 8 и 7 в начале считаем кодом,
+   всё остальное — началом номера. Больше 10 цифр не берём. */
+function octPhoneRest(v) {
+  var d = octDigits(v);
+  if (/^[78]/.test(d)) d = d.slice(1);
+  return d.slice(0, 10);
+}
+
+function octFormatPhone(rest) {
+  var out = '+7';
+  if (!rest) return out + ' ';
+  out += ' (' + rest.slice(0, 3);
+  if (rest.length > 3) out += ') ' + rest.slice(3, 6);
+  if (rest.length > 6) out += '-' + rest.slice(6, 8);
+  if (rest.length > 8) out += '-' + rest.slice(8, 10);
+  return out;
+}
+
+/* Маска для всех полей type="tel" на странице, в том числе в модальном окне */
+function octMaskPhone(e) {
+  var el = e.target;
+  if (!el || el.type !== 'tel') return;
+  var deleting = e.inputType && e.inputType.indexOf('delete') === 0;
+  var rest = octPhoneRest(el.value);
+  var caret = el.selectionStart == null ? el.value.length : el.selectionStart;
+  /* сколько цифр номера стояло перед курсором — туда его и вернём */
+  var before = octPhoneRest(el.value.slice(0, caret)).length;
+  /* Backspace по скобке или дефису: цифры не изменились — стираем цифру слева */
+  if (e.inputType === 'deleteContentBackward' && rest === el._octPrev && before > 0) {
+    rest = rest.slice(0, before - 1) + rest.slice(before);
+    before--;
+  }
+  /* Первая набранная 8 — привычное «8-918…»: это код страны, а не начало номера */
+  if (!el._octPrev && !deleting && rest.length === 1 && rest === '8') { rest = ''; before = 0; }
+  el._octPrev = rest;
+  if (deleting && !rest) { el.value = ''; return; }
+  var formatted = octFormatPhone(rest);
+  el.value = formatted;
+  var pos = formatted.length;
+  if (before < rest.length) {
+    pos = 4;
+    for (var seen = 0; pos < formatted.length && seen < before; pos++) {
+      if (pos > 2 && /\d/.test(formatted.charAt(pos))) seen++;
+    }
+  }
+  try { el.setSelectionRange(pos, pos); } catch (err) {}
+  if (octPhoneValid(el.value)) octMarkError(el, false);
+}
+
+document.addEventListener('input', octMaskPhone);
+document.addEventListener('focusin', function (e) {
+  var el = e.target;
+  if (el && el.type === 'tel' && !el.value) el.value = '+7 ';
+});
+document.addEventListener('focusout', function (e) {
+  var el = e.target;
+  if (el && el.type === 'tel' && !octPhoneRest(el.value)) { el.value = ''; el._octPrev = ''; }
+});
+
 function octMarkError(el, isError) {
   if (!el) return;
   el.classList.toggle('error', !!isError);
@@ -152,7 +217,7 @@ function octValidate(nameEl, phoneEl, consentEl, statusId) {
   var needName = !!nameEl && !(nameField && nameField.hidden);
   if (needName && !nameEl.value.trim()) { octMarkError(nameEl, true); ok = false; }
   else if (nameEl) { octMarkError(nameEl, false); }
-  if (octDigits(phoneEl.value).length < 10) { octMarkError(phoneEl, true); ok = false; } else { octMarkError(phoneEl, false); }
+  if (!octPhoneValid(phoneEl.value)) { octMarkError(phoneEl, true); ok = false; } else { octMarkError(phoneEl, false); }
 
   var consentRow = consentEl ? consentEl.closest('.consent') : null;
   if (consentEl && !consentEl.checked) {
@@ -170,7 +235,7 @@ function octValidate(nameEl, phoneEl, consentEl, statusId) {
         ? 'Заполните имя и телефон и подтвердите согласие на обработку данных.'
         : 'Укажите телефон и подтвердите согласие на обработку данных.';
     } else {
-      msg = needName ? 'Проверьте имя и номер телефона.' : 'Проверьте номер телефона.';
+      msg = needName ? 'Проверьте имя и номер телефона: +7 и ещё 10 цифр.' : 'Проверьте номер телефона: +7 и ещё 10 цифр.';
     }
     octSetStatus(statusId, msg, true);
   } else {
@@ -279,13 +344,13 @@ var OCT_SCHEDULE_URL = '/schedule.html';
 
 var OCT_MODAL_PRESETS = {
   lead: {
-    eyebrow: 'Запись',
-    title: 'Гостевой визит',
-    sub: 'Разовое посещение клуба — 1100 ₽. Оставьте контакты: подберём время и тренера под вашу цель.',
-    submit: 'Записаться',
+    eyebrow: 'Заявка',
+    title: 'Получить консультацию',
+    sub: 'Оставьте контакты — перезвоним, расскажем об абонементах и подберём тренера под вашу цель.',
+    submit: 'Отправить заявку',
     file: false,
     successTitle: 'Заявка отправлена',
-    successText: 'Мы получили заявку и позвоним, чтобы согласовать время визита.',
+    successText: 'Мы получили заявку и перезвоним в ближайшее время.',
     goal: 'lead_trial'
   },
   member: {
@@ -393,7 +458,7 @@ function octApplyPreset(titleOverride) {
   var sub = preset.sub;
   var title = titleOverride || preset.title;
   if (octModalMode === 'lead' && octVisitKind === 'first' && chosen) {
-    sub = 'Запишем на гостевой визит к тренеру ' + chosen + ' — позвоним и согласуем время.';
+    sub = 'Оставьте контакты — перезвоним и запишем к тренеру ' + chosen + '.';
   }
   if (octIsSelf()) {
     title = 'Зал без записи';
@@ -650,7 +715,7 @@ function submitOctModal(e) {
   btn.classList.add('is-sending');
   octSetStatus('octStatus', 'Отправляем…');
 
-  var type = 'Запись на гостевой визит';
+  var type = 'Заявка на консультацию';
   if (octModalMode === 'job') type = 'Отклик на вакансию';
   else if (octModalMode === 'promo') type = 'Акция «Безлимит за 8 600 ₽»';
   else if (member) type = 'Запись к тренеру (действующий клиент)';
@@ -734,7 +799,7 @@ function submitJobsForm(e) {
   return false;
 }
 
-/* ── Форма в блоке «Запишись на гостевой визит» ── */
+/* ── Форма в блоке «Закажи обратный звонок» ── */
 function submitCtaForm(e) {
   if (e) e.preventDefault();
   var nameEl = document.getElementById('ctaName');
@@ -747,10 +812,10 @@ function submitCtaForm(e) {
   octSetStatus('ctaStatus', 'Отправляем…');
 
   sendLead({
-    type: 'Запись на гостевой визит',
+    type: 'Заказ обратного звонка',
     name: nameEl.value.trim(),
     phone: phoneEl.value.trim(),
-    source: 'Форма в блоке «Запишись на гостевой визит»',
+    source: 'Форма в блоке «Закажи обратный звонок»',
     website: octHp('ctaForm'),
     consent: 'да'
   }).then(function () {
@@ -758,7 +823,7 @@ function submitCtaForm(e) {
     octSetStatus('ctaStatus', '');
     nameEl.value = ''; phoneEl.value = ''; consentEl.checked = false;
     octInlineSuccess('ctaForm', 'Заявка отправлена',
-      'Мы получили заявку и позвоним, чтобы согласовать время тренировки.');
+      'Мы получили заявку и перезвоним в ближайшее время.');
   }).catch(function () {
     octSetStatus('ctaStatus', window.OCT_FALLBACK_CONTACT, true);
   }).then(function () {
@@ -781,7 +846,7 @@ function submitArtForm(e) {
   octSetStatus('artStatus', 'Отправляем…');
 
   sendLead({
-    type: 'Запись на гостевой визит',
+    type: 'Заявка на консультацию',
     name: nameEl.value.trim(),
     phone: phoneEl.value.trim(),
     source: 'Форма под статьёй: ' + document.title,
@@ -792,7 +857,7 @@ function submitArtForm(e) {
     octSetStatus('artStatus', '');
     nameEl.value = ''; phoneEl.value = ''; consentEl.checked = false;
     octInlineSuccess('artForm', 'Заявка отправлена',
-      'Мы получили заявку и позвоним, чтобы согласовать время тренировки.');
+      'Мы получили заявку и перезвоним в ближайшее время.');
   }).catch(function () {
     octSetStatus('artStatus', window.OCT_FALLBACK_CONTACT, true);
   }).then(function () {
