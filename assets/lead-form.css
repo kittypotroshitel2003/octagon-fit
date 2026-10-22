@@ -419,8 +419,8 @@ button.is-sending { opacity: 0.6; pointer-events: none; }
   margin: 0 -56px 26px;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  /* кадрируем снизу: там пустой пол, вверху логотип, даты и оффер */
-  object-position: center top;
+  /* кадр задаёт пресет акции (bannerPos): у каждого баннера надпись на своём месте */
+  object-position: var(--oct-banner-pos, center top);
   border-radius: 28px 28px 0 0;
 }
 .job-modal.is-promo .job-modal-title {

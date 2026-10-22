@@ -378,15 +378,17 @@ var OCT_MODAL_PRESETS = {
   },
   promo: {
     eyebrow: '',
-    title: 'Твой старт — безлимит за 8 600 ₽',
+    name: 'Акция «Каждый 4-й месяц в подарок»',
+    title: 'Каждый 4-й месяц тренировок — в подарок',
     sub: [
-      'Начни с себя — добавь в свой ритм больше движения и энергии. Безлимитный абонемент в OCTAGON-FIT за 8 600 ₽ — повод вернуться к тренировкам или впервые прийти в зал.',
-      'Оставь заявку — расскажем об условиях акции и поможем оформить абонемент.'
+      'Больше тренировок с OCTAGON-FIT! Оформи клубную карту до 25 октября и получи каждый 4-й месяц тренировок в подарок. Количество карт по акции ограничено.',
+      'Оставь заявку — поможем подобрать абонемент и расскажем об условиях акции.'
     ],
-    banner: '/img/promo-start-8600.webp',
-    bannerAlt: 'Акция: безлимитный абонемент за 8 600 ₽',
-    /* на телефоне кадр уже — сдвигаем его вниз, чтобы цена не обрезалась */
-    bannerPosMobile: 'center 30%',
+    banner: '/img/promo-4th-month.webp',
+    bannerAlt: 'Акция: каждый 4-й месяц в подарок, до 25 октября',
+    /* надпись занимает почти весь квадрат — кадрируем так, чтобы влезли дата и «количество карт ограничено» */
+    bannerPos: 'center 65%',
+    bannerPosMobile: 'center 62%',
     submit: 'Отправить',
     file: false,
     successTitle: 'Заявка отправлена',
@@ -449,6 +451,7 @@ function octSetBanner(preset) {
   if (img.getAttribute('src') !== preset.banner) {
     img.setAttribute('src', preset.banner);
     img.setAttribute('alt', preset.bannerAlt || '');
+    img.style.setProperty('--oct-banner-pos', preset.bannerPos || 'center top');
     img.style.setProperty('--oct-banner-pos-m', preset.bannerPosMobile || 'center top');
   }
   img.hidden = false;
@@ -599,18 +602,18 @@ function openMemberModal(source) {
    ОКНО АКЦИИ
    Открывается по клику и само — после первого экрана
    прокрутки, пока акция идёт, и не чаще раза в неделю
-   на человека. Новая акция: поменяйте пресет promo,
+   на человека. Новая акция: поменяйте пресет promo (с name),
    until и key (ключ — чтобы показ начался заново).
 ═══════════════════════════════════════════════════ */
 var OCT_PROMO = {
-  key: 'oct-promo-start-8600',
-  until: '2026-10-10T23:59:59+03:00',
+  key: 'oct-promo-4th-month-2510',
+  until: '2026-10-25T23:59:59+03:00',
   repeatAfterDays: 7,
   source: 'Автопопап акции'
 };
 
 function openPromoModal(source) {
-  octOpenModal('promo', null, source || 'Акция «Безлимит за 8 600 ₽»');
+  octOpenModal('promo', null, source || OCT_MODAL_PRESETS.promo.name);
 }
 
 /* Кнопки «акции» на сайте: пока акция идёт — её окно,
@@ -720,7 +723,7 @@ function submitOctModal(e) {
 
   var type = 'Заявка на консультацию';
   if (octModalMode === 'job') type = 'Отклик на вакансию';
-  else if (octModalMode === 'promo') type = 'Акция «Безлимит за 8 600 ₽»';
+  else if (octModalMode === 'promo') type = OCT_MODAL_PRESETS.promo.name;
   else if (member) type = 'Запись к тренеру (действующий клиент)';
 
   sendLead({
