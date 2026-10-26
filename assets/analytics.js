@@ -9,7 +9,7 @@
      lead_trial — заявка на консультацию или обратный звонок
      lead_job   — отклик на вакансию
 ═══════════════════════════════════════════════════ */
-window.OCT_METRIKA_ID = 0;
+window.OCT_METRIKA_ID = 72008407;
 
 (function () {
   "use strict";

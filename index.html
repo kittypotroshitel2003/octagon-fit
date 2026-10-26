@@ -1950,7 +1950,9 @@
       .comfort-grid { grid-template-columns: 1fr; gap: 10px; }
       .amenity { height: 240px; overflow: hidden !important; }
       .amenity img { position: absolute !important; inset: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; }
-      .amenity-label { position: relative !important; top: auto !important; left: auto !important; z-index: 2 !important; display: inline-block !important; margin: 12px !important; font-size: 14px !important; padding: 10px 14px !important; }
+      .amenity-label { position: relative !important; top: auto !important; left: auto !important; z-index: 2 !important; display: inline-block !important; margin: 12px !important; font-size: 14px !important; padding: 10px 14px !important;
+        /* на узких телефонах длинные подписи («внутриклубные мероприятия») не влезали в одну строку и обрезались */
+        white-space: normal !important; max-width: calc(100% - 24px); line-height: 1.15 !important; letter-spacing: 0.04em !important; }
 
       /* CTA */
       .cta-section { min-height: auto; padding: 52px 16px 0; display: flex; flex-direction: column; }
@@ -2867,13 +2869,21 @@
       idx = target;
       applyTransform(animate !== false);
       updateDots();
+      if (animate) { clearTimeout(settleTimer); settleTimer = setTimeout(settle, 900); }
     }
 
-    slider.addEventListener('transitionend', function() {
+    /* Анимация может не завершиться transitionend: её прерывает касание
+       (transition: none в touchstart) или вкладка в фоне. Без запасного
+       таймера флаг sliding залипал, и слайдер переставал листаться. */
+    var settleTimer;
+    function settle() {
+      clearTimeout(settleTimer);
       sliding = false;
       if (idx >= CLONES + REAL) { idx -= REAL; applyTransform(false); updateDots(); }
       if (idx <  CLONES)        { idx += REAL; applyTransform(false); updateDots(); }
-    });
+    }
+    slider.addEventListener('transitionend', function(e) { if (e.target === slider) settle(); });
+    slider.addEventListener('transitioncancel', function(e) { if (e.target === slider) settle(); });
 
     function next() { goTo(idx + 1, true); }
     function prev() { goTo(idx - 1, true); }
@@ -2899,6 +2909,8 @@
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
         curDx = 0; dragging = false; lockDir = null;
+        clearInterval(timer);
+        if (sliding) settle();
         slider.style.transition = 'none';
       }, { passive: true });
       wrap.addEventListener('touchmove', function(e) {
@@ -2912,8 +2924,8 @@
       }, { passive: false });
       wrap.addEventListener('touchend', function() {
         slider.style.transition = '';
-        if (!dragging || Math.abs(curDx) < 40) { applyTransform(true); return; }
         reset();
+        if (!dragging || Math.abs(curDx) < 40) { applyTransform(true); return; }
         if (curDx < 0) next(); else prev();
         dragging = false;
       }, { passive: true });
