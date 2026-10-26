@@ -1,0 +1,34 @@
+octagon-fit.ru {
+    root * /srv/sites/octagon-fit.ru
+    file_server
+    try_files {path} {path}/ =404
+    encode gzip zstd
+
+    # Адреса старого сайта на Tilda (MIGRATION.md, раздел 3)
+    redir /schedule  /schedule.html 301
+    redir /privacy   /privacy.html  301
+    redir /agreement /privacy.html  301
+
+    # Cache hashed assets (js, css, images) — immutable, long TTL
+    @hashed path *.js *.css *.woff2 *.woff *.ttf
+    header @hashed Cache-Control "public, max-age=31536000, immutable"
+
+    @images path *.png *.jpg *.jpeg *.gif *.webp *.avif *.svg *.ico
+    header @images Cache-Control "public, max-age=2592000"
+
+    # HTML — always revalidate
+    @html path *.html /
+    header @html Cache-Control "public, max-age=0, must-revalidate"
+
+    # Security & performance headers
+    header {
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "SAMEORIGIN"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        -Server
+    }
+}
+
+www.octagon-fit.ru {
+    redir https://octagon-fit.ru{uri} 301
+}
