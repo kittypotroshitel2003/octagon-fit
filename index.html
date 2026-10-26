@@ -34,50 +34,50 @@
        иначе Яндекс.Карты измеряют контейнер по неверному (немасштабированному) размеру */
     document.documentElement.style.zoom = window.innerWidth >= 1200 ? (window.innerWidth / 1920) : 1;
   </script>
-  <link rel="preload" href="fonts/tilda-sans_regular.ttf" as="font" type="font/ttf" crossorigin>
-  <link rel="preload" href="fonts/tilda-sans_bold.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="preload" href="fonts/tilda-sans_regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="fonts/tilda-sans_bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/Gunterz-Medium.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="fonts/SF-Pro-Display-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <style>
     /* ── Шрифты ── */
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_regular.ttf') format('truetype');
+      src: url('fonts/tilda-sans_regular.woff2') format('woff2');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_medium.ttf') format('truetype');
+      src: url('fonts/tilda-sans_medium.woff2') format('woff2');
       font-weight: 500;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_semibold.ttf') format('truetype');
+      src: url('fonts/tilda-sans_semibold.woff2') format('woff2');
       font-weight: 600;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_bold.ttf') format('truetype');
+      src: url('fonts/tilda-sans_bold.woff2') format('woff2');
       font-weight: 700;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_extra-bold-.ttf') format('truetype');
+      src: url('fonts/tilda-sans_extra-bold-.woff2') format('woff2');
       font-weight: 800;
       font-style: normal;
       font-display: swap;
     }
     @font-face {
       font-family: 'TildaSans';
-      src: url('fonts/tilda-sans_black.ttf') format('truetype');
+      src: url('fonts/tilda-sans_black.woff2') format('woff2');
       font-weight: 900;
       font-style: normal;
       font-display: swap;
@@ -2781,10 +2781,10 @@
   <div class="cta-map" id="contacts" data-reveal data-delay="200">
     <iframe
       id="ctaMapFrame"
-      src="https://yandex.ru/map-widget/v1/?ll=39.027568%2C45.027413&z=16&pt=39.027568%2C45.027413%2Cpm2rdm&l=map&lang=ru_RU"
+      data-src="https://yandex.ru/map-widget/v1/?ll=39.027568%2C45.027413&z=16&pt=39.027568%2C45.027413%2Cpm2rdm&l=map&lang=ru_RU"
       style="position:absolute;inset:0;width:100%;height:100%;border:0;"
-      allowfullscreen
-      loading="eager">
+      title="OCTAGON-FIT на карте: Краснодар, ул. Селезнёва, 87"
+      allowfullscreen>
     </iframe>
   </div>
 
@@ -2953,19 +2953,15 @@
 
   /* Виджет Яндекс.Карт измеряет свой контейнер один раз при загрузке —
      если к этому моменту масштаб/раскладка страницы ещё не устоялись,
-     карта не заполняет контейнер целиком. Форсируем перезагрузку виджета
-     уже после полной стабилизации страницы, чтобы он замерил себя заново. */
+     карта не заполняет контейнер целиком. Поэтому src ставим только после
+     полной стабилизации страницы. Заодно карта (несколько мегабайт) не держит
+     событие load — его ждут Метрика и колесо game-lead. */
   (function() {
     var mapFrame = document.getElementById('ctaMapFrame');
     if (!mapFrame) return;
-    var src = mapFrame.getAttribute('src');
-    function reloadMap() {
-      mapFrame.src = 'about:blank';
-      requestAnimationFrame(function() {
-        requestAnimationFrame(function() { mapFrame.src = src; });
-      });
-    }
-    window.addEventListener('load', function() { setTimeout(reloadMap, 400); });
+    function loadMap() { mapFrame.src = mapFrame.getAttribute('data-src'); }
+    if (document.readyState === 'complete') setTimeout(loadMap, 400);
+    else window.addEventListener('load', function() { setTimeout(loadMap, 400); });
   })();
 
   /* «Контакты» — прокрутка к карте и адресу.
