@@ -423,16 +423,17 @@ async function uploadDist(creds, domain) {
 async function uploadStatic(creds, domain) {
   const SftpClient = (await import("ssh2-sftp-client")).default;
   const sftp = new SftpClient();
-  const remotePath = `${SITES_DIR}/${domain}`;
+  const livePath = `${SITES_DIR}/${domain}`;
+  // Upload into a fresh staging dir and swap it in at the end: the live site
+  // stays up during the upload, and parallel deploys don't delete each other's files
+  const stamp = `${Date.now()}-${process.pid}`;
+  const remotePath = `${livePath}.upload-${stamp}`;
+  const oldPath = `${livePath}.old-${stamp}`;
   const baseDir = process.cwd();
 
   try {
     await sftp.connect(creds);
 
-    const exists = await sftp.exists(remotePath);
-    if (exists) {
-      await sftp.rmdir(remotePath, true);
-    }
     await sftp.mkdir(remotePath, true);
 
     const files = collectStaticFiles(baseDir);
@@ -458,6 +459,20 @@ async function uploadStatic(creds, domain) {
         await sftp.put(file, remote);
       }
     }
+
+    // Swap: two renames, the site is missing for milliseconds instead of minutes
+    if (await sftp.exists(livePath)) await sftp.rename(livePath, oldPath);
+    await sftp.rename(remotePath, livePath);
+    if (await sftp.exists(oldPath)) await sftp.rmdir(oldPath, true);
+  } catch (e) {
+    // Swap broke halfway: put the previous version back
+    if (!(await sftp.exists(livePath).catch(() => true)) && (await sftp.exists(oldPath).catch(() => false))) {
+      await sftp.rename(oldPath, livePath).catch(() => {});
+    }
+    if (await sftp.exists(remotePath).catch(() => false)) {
+      await sftp.rmdir(remotePath, true).catch(() => {});
+    }
+    throw e;
   } finally {
     await sftp.end();
   }
