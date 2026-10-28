@@ -733,6 +733,13 @@ document.addEventListener('touchend', function (e) {
   if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) octStepPromo(dx < 0 ? 1 : -1);
 }, { passive: true });
 
+/* Кнопки «акции» на сайте: пока акция идёт — её окно,
+   между акциями — обычная заявка, чтобы не показать прошедшую */
+function openActivePromo(source) {
+  if (octPromoIsLive()) openPromoModal(source);
+  else openLeadModal(source);
+}
+
 function octPromoIsLive() {
   return octLivePromos().length > 0;
 }
