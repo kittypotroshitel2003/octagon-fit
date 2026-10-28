@@ -16,7 +16,12 @@
     '<div class="job-modal-overlay" id="octModalOverlay" role="dialog" aria-modal="true" aria-labelledby="octModalTitle" tabindex="-1" onclick="closeOctModal(event)">',
     '  <div class="job-modal" id="octModal">',
     '    <button class="job-modal-close" type="button" onclick="closeOctModal(null)" aria-label="Закрыть">✕</button>',
-    '    <img class="oct-modal-banner" id="octModalBanner" alt="" hidden>',
+    '    <div class="oct-promo-media" id="octPromoMedia" hidden>',
+    '      <img class="oct-modal-banner" id="octModalBanner" alt="">',
+    '      <button class="oct-promo-arrow oct-promo-arrow--prev" type="button" onclick="octStepPromo(-1)" aria-label="Предыдущая акция" hidden><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M12.5 4.5 7 10l5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+    '      <button class="oct-promo-arrow oct-promo-arrow--next" type="button" onclick="octStepPromo(1)" aria-label="Следующая акция" hidden><svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4.5 13 10l-5.5 5.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>',
+    '      <div class="oct-promo-dots" id="octPromoDots" hidden></div>',
+    '    </div>',
     '',
     '    <form id="octModalForm" data-tg="off" onsubmit="return submitOctModal(event)" novalidate>',
     '      <input type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">',
@@ -78,8 +83,6 @@
     '      <h3 id="octSuccessTitle">Заявка отправлена</h3>',
     '      <p id="octSuccessText">Мы получили вашу заявку и свяжемся с вами в ближайшее время.</p>',
     '    </div>',
-    '',
-    '    <div class="oct-promo-more" id="octPromoMore" hidden></div>',
     '  </div>',
     '</div>'
   ].join('\n');
@@ -383,7 +386,7 @@ var OCT_MODAL_PRESETS = {
 };
 
 /* Акции по приоритету: первая живая открывается в окне сразу,
-   остальные идут ниже карточками «Ещё акция клуба».
+   к остальным листают стрелками на баннере.
    Закончилась (until) — пропадает сама. */
 var OCT_PROMO_FORM = {
   eyebrow: '',
@@ -407,7 +410,7 @@ var OCT_PROMOS = [
     bannerAlt: 'Акция на Хэллоуин: год за 13 000 ₽, только 27, 28 и 29 октября',
     /* надпись занимает почти весь квадрат — кадрируем так, чтобы влезли цена и даты */
     bannerPos: 'center 50%',
-    bannerPosMobile: 'center 45%'
+    bannerPosMobile: 'center 40%'
   },
   {
     until: '2026-10-31T23:59:59+03:00',
@@ -484,16 +487,17 @@ window.addEventListener('resize', octFitPromo);
 
 /* Баннер акции: грузим один раз, в остальных режимах прячем */
 function octSetBanner(preset) {
+  var media = document.getElementById('octPromoMedia');
   var img = document.getElementById('octModalBanner');
-  if (!img) return;
-  if (!preset.banner) { img.hidden = true; return; }
+  if (!media || !img) return;
+  if (!preset.banner) { media.hidden = true; return; }
   if (img.getAttribute('src') !== preset.banner) {
     img.setAttribute('src', preset.banner);
     img.setAttribute('alt', preset.bannerAlt || '');
     img.style.setProperty('--oct-banner-pos', preset.bannerPos || 'center top');
     img.style.setProperty('--oct-banner-pos-m', preset.bannerPosMobile || 'center top');
   }
-  img.hidden = false;
+  media.hidden = false;
 }
 
 function octApplyPreset(titleOverride) {
@@ -589,7 +593,7 @@ function octOpenModal(mode, titleOverride, source, trainer) {
 
   /* Окно акции повторяет баннер: одно поле и кнопка, имя не спрашиваем */
   document.getElementById('octModal').classList.toggle('is-promo', promo);
-  document.getElementById('octPromoMore').hidden = true;
+  octRenderPromoNav();
   document.getElementById('octNameField').hidden = promo;
   octFitPromo();
 
@@ -656,78 +660,78 @@ function openPromoModal(source) {
   if (!live.length) { openLeadModal(source); return; }
   OCT_MODAL_PRESETS.promo = live[0];
   octOpenModal('promo', null, source || live[0].name);
-  octRenderMorePromos();
+  octRenderPromoNav();
 }
 
-/* Остальные живые акции — карточками под формой */
-function octRenderMorePromos() {
-  var box = document.getElementById('octPromoMore');
-  if (!box) return;
-  var current = OCT_MODAL_PRESETS.promo;
-  var others = octLivePromos().filter(function (promo) { return promo !== current; });
-  box.textContent = '';
-  box.hidden = !others.length;
-  if (!others.length) return;
-
-  var label = document.createElement('p');
-  label.className = 'oct-promo-more-label';
-  label.textContent = others.length > 1 ? 'Ещё акции клуба' : 'Ещё акция клуба';
-  box.appendChild(label);
-
-  others.forEach(function (promo) {
-    var card = document.createElement('div');
-    card.className = 'oct-promo-card';
-
-    var img = document.createElement('img');
-    img.className = 'oct-promo-card-img';
-    img.src = promo.banner;
-    img.alt = promo.bannerAlt || '';
-    img.loading = 'lazy';
-    img.style.setProperty('--oct-banner-pos', promo.bannerPos || 'center top');
-    img.style.setProperty('--oct-banner-pos-m', promo.bannerPosMobile || 'center top');
-
-    var title = document.createElement('h3');
-    title.className = 'oct-promo-card-title';
-    title.textContent = promo.title;
-
-    var text = document.createElement('p');
-    text.className = 'oct-promo-card-text';
-    text.textContent = typeof promo.sub === 'string' ? promo.sub : promo.sub[0];
-
-    var btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'oct-promo-card-btn';
-    btn.textContent = 'Хочу эту акцию';
-    btn.addEventListener('click', function () { octShowPromo(promo); });
-
-    card.appendChild(img);
-    card.appendChild(title);
-    card.appendChild(text);
-    card.appendChild(btn);
-    box.appendChild(card);
+/* Стрелки и точки на баннере — только если акций больше одной */
+function octRenderPromoNav() {
+  var live = octLivePromos();
+  var many = octModalMode === 'promo' && live.length > 1;
+  var media = document.getElementById('octPromoMedia');
+  var dots = document.getElementById('octPromoDots');
+  if (!media || !dots) return;
+  media.querySelectorAll('.oct-promo-arrow').forEach(function (btn) { btn.hidden = !many; });
+  dots.hidden = !many;
+  dots.textContent = '';
+  if (!many) return;
+  var current = live.indexOf(OCT_MODAL_PRESETS.promo);
+  live.forEach(function (promo, i) {
+    var dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'oct-promo-dot' + (i === current ? ' is-active' : '');
+    dot.setAttribute('aria-label', 'Акция ' + (i + 1) + ' из ' + live.length);
+    if (i === current) dot.setAttribute('aria-current', 'true');
+    dot.addEventListener('click', function () { octShowPromo(promo); });
+    dots.appendChild(dot);
   });
 }
 
-/* Переключение на другую акцию прямо в окне: телефон и согласие сохраняются */
-function octShowPromo(promo) {
-  OCT_MODAL_PRESETS.promo = promo;
-  document.getElementById('octModalForm').style.display = '';
-  document.getElementById('octModalSuccess').style.display = 'none';
-  octSetStatus('octStatus', '');
-  octApplyPreset();
-  octRenderMorePromos();
-  var modal = document.getElementById('octModal');
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (modal.scrollTo) modal.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-  else modal.scrollTop = 0;
+/* Листаем по кругу */
+function octStepPromo(dir) {
+  var live = octLivePromos();
+  if (live.length < 2) return;
+  var i = live.indexOf(OCT_MODAL_PRESETS.promo);
+  octShowPromo(live[(i + dir + live.length) % live.length], dir);
 }
 
-/* Кнопки «акции» на сайте: пока акция идёт — её окно,
-   между акциями — обычная заявка, чтобы не показать прошедшую */
-function openActivePromo(source) {
-  if (octPromoIsLive()) openPromoModal(source);
-  else openLeadModal(source);
+/* Переключение акции прямо в окне: телефон и согласие сохраняются */
+var octPromoSwapTimer;
+function octShowPromo(promo, dir) {
+  if (!promo || promo === OCT_MODAL_PRESETS.promo) return;
+  var img = document.getElementById('octModalBanner');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function swap() {
+    OCT_MODAL_PRESETS.promo = promo;
+    document.getElementById('octModalForm').style.display = '';
+    document.getElementById('octModalSuccess').style.display = 'none';
+    octSetStatus('octStatus', '');
+    octApplyPreset();
+    octRenderPromoNav();
+    img.classList.remove('is-out-left', 'is-out-right');
+  }
+
+  clearTimeout(octPromoSwapTimer);
+  if (reduce) { swap(); return; }
+  img.classList.add(dir < 0 ? 'is-out-right' : 'is-out-left');
+  octPromoSwapTimer = setTimeout(swap, 180);
 }
+
+/* Свайп по баннеру на телефоне */
+document.addEventListener('touchstart', function (e) {
+  var media = e.target.closest && e.target.closest('#octPromoMedia');
+  if (!media) return;
+  media._x = e.touches[0].clientX;
+  media._y = e.touches[0].clientY;
+}, { passive: true });
+document.addEventListener('touchend', function (e) {
+  var media = e.target.closest && e.target.closest('#octPromoMedia');
+  if (!media || media._x == null) return;
+  var dx = e.changedTouches[0].clientX - media._x;
+  var dy = e.changedTouches[0].clientY - media._y;
+  media._x = null;
+  if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) octStepPromo(dx < 0 ? 1 : -1);
+}, { passive: true });
 
 function octPromoIsLive() {
   return octLivePromos().length > 0;
