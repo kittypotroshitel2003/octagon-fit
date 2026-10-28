@@ -459,6 +459,68 @@ button.is-sending { opacity: 0.6; pointer-events: none; }
   .job-modal.is-promo .job-modal-submit { margin-top: 22px; }
 }
 
+/* Другие акции под формой: видны при прокрутке окна */
+.oct-promo-more {
+  margin-top: 36px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+.oct-promo-more-label {
+  font-family: 'SFPro', sans-serif;
+  font-size: 13px; font-weight: 500;
+  color: var(--yellow);
+  letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.oct-promo-card + .oct-promo-card { margin-top: 28px; }
+.oct-promo-card-img {
+  display: block;
+  width: 100%;
+  /* 3:2 и мобильный кадр пресета: в этот формат надпись баннера влезает целиком */
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  object-position: var(--oct-banner-pos-m, center top);
+  border-radius: 16px;
+  margin-bottom: 18px;
+}
+.oct-promo-card-title {
+  font-family: 'Gunterz', sans-serif;
+  font-weight: 500; font-size: 22px;
+  letter-spacing: -0.9px; line-height: 1.12;
+  color: #fff;
+  margin-bottom: 10px;
+}
+.oct-promo-card-text {
+  font-family: 'SFPro', sans-serif;
+  font-size: 15px; line-height: 1.6;
+  color: rgba(255,255,255,0.62);
+  margin-bottom: 20px;
+}
+.oct-promo-card-btn {
+  width: 100%;
+  font-family: 'Gunterz', sans-serif;
+  font-weight: 500; font-size: 17px;
+  letter-spacing: -0.4px;
+  color: var(--yellow);
+  background: transparent;
+  border: 1.5px solid var(--yellow);
+  border-radius: 100px;
+  padding: 16px 0;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+.oct-promo-card-btn:hover { background: var(--yellow); color: var(--charcoal); }
+.oct-promo-card-btn:active { transform: scale(0.98); }
+.oct-promo-card-btn:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
+
+@media (max-width: 767px) {
+  .oct-promo-more { margin-top: 28px; padding-top: 22px; }
+  .oct-promo-card-img { border-radius: 14px; }
+  .oct-promo-card-title { font-size: 19px; letter-spacing: -0.7px; }
+  .oct-promo-card-text { font-size: 14px; }
+  .oct-promo-card-btn { font-size: 16px; padding: 14px 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .job-modal, .job-modal-overlay { transition: none !important; }
 }

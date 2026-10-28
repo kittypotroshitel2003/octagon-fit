@@ -78,6 +78,8 @@
     '      <h3 id="octSuccessTitle">Заявка отправлена</h3>',
     '      <p id="octSuccessText">Мы получили вашу заявку и свяжемся с вами в ближайшее время.</p>',
     '    </div>',
+    '',
+    '    <div class="oct-promo-more" id="octPromoMore" hidden></div>',
     '  </div>',
     '</div>'
   ].join('\n');
@@ -376,26 +378,63 @@ var OCT_MODAL_PRESETS = {
     successText: 'Мы получили вашу заявку и свяжемся с вами в ближайшее время.',
     goal: 'lead_job'
   },
-  promo: {
-    eyebrow: '',
-    name: 'Акция «Страшные скидки — год за 13 000 ₽»',
-    title: 'Страшные скидки — год за 13 000 ₽',
+  /* текущая акция окна — подставляется из OCT_PROMOS при открытии */
+  promo: null
+};
+
+/* Акции по приоритету: первая живая открывается в окне сразу,
+   остальные идут ниже карточками «Ещё акция клуба».
+   Закончилась (until) — пропадает сама. */
+var OCT_PROMO_FORM = {
+  eyebrow: '',
+  submit: 'Отправить',
+  file: false,
+  successTitle: 'Заявка отправлена',
+  successText: 'Мы получили заявку и позвоним, чтобы рассказать условия акции и помочь с оформлением.',
+  goal: 'lead_promo'
+};
+
+var OCT_PROMOS = [
+  {
+    until: '2026-10-29T23:59:59+03:00',
+    name: 'Акция «Страшные скидки — год за 13 000 ₽»',
+    title: 'Страшные скидки — год за 13 000 ₽',
     sub: [
-      'Встречай Хэллоуин в OCTAGON-FIT! Только 27, 28 и 29 октября оформляй годовую клубную карту за 13 000 ₽. Всего три дня, чтобы забрать предложение.',
+      'Встречай Хэллоуин в OCTAGON-FIT! Только 27, 28 и 29 октября оформляй годовую клубную карту за 13 000 ₽. Всего три дня, чтобы забрать предложение.',
       'Оставь заявку — расскажем об условиях акции и поможем оформить карту!'
     ],
     banner: '/img/promo-halloween-13000.webp',
-    bannerAlt: 'Акция на Хэллоуин: год за 13 000 ₽, только 27, 28 и 29 октября',
+    bannerAlt: 'Акция на Хэллоуин: год за 13 000 ₽, только 27, 28 и 29 октября',
     /* надпись занимает почти весь квадрат — кадрируем так, чтобы влезли цена и даты */
     bannerPos: 'center 50%',
-    bannerPosMobile: 'center 45%',
-    submit: 'Отправить',
-    file: false,
-    successTitle: 'Заявка отправлена',
-    successText: 'Мы получили заявку и позвоним, чтобы рассказать условия акции и помочь с оформлением.',
-    goal: 'lead_promo'
+    bannerPosMobile: 'center 45%'
+  },
+  {
+    until: '2026-10-31T23:59:59+03:00',
+    name: 'Акция «Каждый 4-й месяц в подарок»',
+    title: 'Каждый 4-й месяц тренировок — в подарок',
+    sub: [
+      'Больше тренировок с OCTAGON-FIT! Оформи клубную карту до конца октября и получи каждый 4-й месяц тренировок в подарок. Количество карт по акции ограничено.',
+      'Оставь заявку — поможем подобрать абонемент и расскажем об условиях акции.'
+    ],
+    banner: '/img/promo-4th-month-oct.webp',
+    bannerAlt: 'Акция: каждый 4-й месяц в подарок, до конца месяца',
+    bannerPos: 'center 65%',
+    bannerPosMobile: 'center 62%'
   }
-};
+];
+
+OCT_PROMOS.forEach(function (promo) {
+  Object.keys(OCT_PROMO_FORM).forEach(function (k) { if (!(k in promo)) promo[k] = OCT_PROMO_FORM[k]; });
+});
+
+function octLivePromos() {
+  var now = Date.now();
+  return OCT_PROMOS.filter(function (promo) {
+    var until = new Date(promo.until).getTime();
+    return !isNaN(until) && now < until;
+  });
+}
 
 /* Наполняем список тренеров один раз */
 function octFillTrainers() {
@@ -550,6 +589,7 @@ function octOpenModal(mode, titleOverride, source, trainer) {
 
   /* Окно акции повторяет баннер: одно поле и кнопка, имя не спрашиваем */
   document.getElementById('octModal').classList.toggle('is-promo', promo);
+  document.getElementById('octPromoMore').hidden = true;
   document.getElementById('octNameField').hidden = promo;
   octFitPromo();
 
@@ -602,18 +642,84 @@ function openMemberModal(source) {
    ОКНО АКЦИИ
    Открывается по клику и само — после первого экрана
    прокрутки, пока акция идёт, и не чаще раза в неделю
-   на человека. Новая акция: поменяйте пресет promo (с name),
-   until и key (ключ — чтобы показ начался заново).
+   на человека. Новая акция: добавьте её в OCT_PROMOS
+   (выше — приоритетнее) и смените key, чтобы показ начался заново.
 ═══════════════════════════════════════════════════ */
 var OCT_PROMO = {
   key: 'oct-promo-halloween-13000',
-  until: '2026-10-29T23:59:59+03:00',
   repeatAfterDays: 7,
   source: 'Автопопап акции'
 };
 
 function openPromoModal(source) {
-  octOpenModal('promo', null, source || OCT_MODAL_PRESETS.promo.name);
+  var live = octLivePromos();
+  if (!live.length) { openLeadModal(source); return; }
+  OCT_MODAL_PRESETS.promo = live[0];
+  octOpenModal('promo', null, source || live[0].name);
+  octRenderMorePromos();
+}
+
+/* Остальные живые акции — карточками под формой */
+function octRenderMorePromos() {
+  var box = document.getElementById('octPromoMore');
+  if (!box) return;
+  var current = OCT_MODAL_PRESETS.promo;
+  var others = octLivePromos().filter(function (promo) { return promo !== current; });
+  box.textContent = '';
+  box.hidden = !others.length;
+  if (!others.length) return;
+
+  var label = document.createElement('p');
+  label.className = 'oct-promo-more-label';
+  label.textContent = others.length > 1 ? 'Ещё акции клуба' : 'Ещё акция клуба';
+  box.appendChild(label);
+
+  others.forEach(function (promo) {
+    var card = document.createElement('div');
+    card.className = 'oct-promo-card';
+
+    var img = document.createElement('img');
+    img.className = 'oct-promo-card-img';
+    img.src = promo.banner;
+    img.alt = promo.bannerAlt || '';
+    img.loading = 'lazy';
+    img.style.setProperty('--oct-banner-pos', promo.bannerPos || 'center top');
+    img.style.setProperty('--oct-banner-pos-m', promo.bannerPosMobile || 'center top');
+
+    var title = document.createElement('h3');
+    title.className = 'oct-promo-card-title';
+    title.textContent = promo.title;
+
+    var text = document.createElement('p');
+    text.className = 'oct-promo-card-text';
+    text.textContent = typeof promo.sub === 'string' ? promo.sub : promo.sub[0];
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'oct-promo-card-btn';
+    btn.textContent = 'Хочу эту акцию';
+    btn.addEventListener('click', function () { octShowPromo(promo); });
+
+    card.appendChild(img);
+    card.appendChild(title);
+    card.appendChild(text);
+    card.appendChild(btn);
+    box.appendChild(card);
+  });
+}
+
+/* Переключение на другую акцию прямо в окне: телефон и согласие сохраняются */
+function octShowPromo(promo) {
+  OCT_MODAL_PRESETS.promo = promo;
+  document.getElementById('octModalForm').style.display = '';
+  document.getElementById('octModalSuccess').style.display = 'none';
+  octSetStatus('octStatus', '');
+  octApplyPreset();
+  octRenderMorePromos();
+  var modal = document.getElementById('octModal');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (modal.scrollTo) modal.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+  else modal.scrollTop = 0;
 }
 
 /* Кнопки «акции» на сайте: пока акция идёт — её окно,
@@ -624,8 +730,7 @@ function openActivePromo(source) {
 }
 
 function octPromoIsLive() {
-  var until = new Date(OCT_PROMO.until).getTime();
-  return !isNaN(until) && Date.now() < until;
+  return octLivePromos().length > 0;
 }
 
 /* localStorage, а не sessionStorage: тот живёт в пределах одной вкладки,
@@ -649,7 +754,7 @@ function octPromoAutoOpen() {
 
   /* баннер кладём в кеш заранее: окно всплывает само, ждать картинку в нём нечего */
   var warm = new Image();
-  warm.src = OCT_MODAL_PRESETS.promo.banner;
+  warm.src = octLivePromos()[0].banner;
 
   function stop() {
     window.removeEventListener('scroll', onScroll);
