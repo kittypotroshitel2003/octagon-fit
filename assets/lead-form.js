@@ -68,7 +68,7 @@
     '        <input type="file" id="octFileInput" accept=".pdf,.doc,.docx" onchange="handleResumeFile(this,\'octFileName\')">',
     '      </div>',
     '',
-    '      <label class="consent" for="octConsent">',
+    '      <label class="consent">',
     '        <input class="consent-box" type="checkbox" id="octConsent">',
     '        <span class="consent-mark" aria-hidden="true"></span>',
     '        <span class="consent-text">Я согласен на обработку персональных данных и принимаю условия <a href="/privacy.html" target="_blank" rel="noopener">политики конфиденциальности</a>.</span>',
@@ -199,6 +199,36 @@ function octSetStatus(id, text, isError) {
   el.textContent = text || '';
   el.classList.toggle('error', !!isError);
 }
+
+/* После неудачной попытки согласие можно поставить сразу: снимаем подсветку
+   ошибки и устаревшее сообщение, чтобы следующая отправка проходила штатно. */
+document.addEventListener('change', function (e) {
+  var consent = e.target;
+  if (!consent || !consent.classList.contains('consent-box')) return;
+  var row = consent.closest('.consent');
+  if (!row) return;
+  if (consent.checked) {
+    row.classList.remove('error');
+    var form = consent.closest('form');
+    var status = form && form.querySelector('.form-status');
+    if (status && status.classList.contains('error')) {
+      status.textContent = '';
+      status.classList.remove('error');
+    }
+  }
+});
+
+/* Кастомная область чекбокса должна работать и при клике по галочке,
+   и при клике по тексту. Убираем зависимость от скрытого input и label-for. */
+document.addEventListener('click', function (e) {
+  var row = e.target.closest && e.target.closest('.consent');
+  if (!row || e.target.closest('a') || e.target.classList.contains('consent-box')) return;
+  var consent = row.querySelector('.consent-box');
+  if (!consent) return;
+  e.preventDefault();
+  consent.checked = !consent.checked;
+  consent.dispatchEvent(new Event('change', { bubbles: true }));
+});
 
 function octGoal(name) {
   try {
