@@ -1,3 +1,9 @@
 node_modules/
 .env
 leads.log
+*.sqlite3
+*.sqlite3-*
+leads.jsonl
+service.log
+service.pid
+__pycache__/

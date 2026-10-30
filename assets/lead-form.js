@@ -330,28 +330,20 @@ function sendLead(payload, file) {
       body: JSON.stringify(data)
     }).then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json().catch(function () { return { ok: true }; });
+      return res.json();
     }).then(function (result) {
-      if (result && result.ok === false) throw new Error(result.error || 'server');
+      if (!result || result.ok !== true) throw new Error((result && result.error) || 'server');
       return result;
     });
   }
 
-  /* Telegram уходит сразу — не ждём ни чтения файла, ни ответа почтового сервиса */
-  var relayed = octRelay(data, file);
+  /* Telegram — дополнительный канал без подтверждения доставки.
+     Успех формы подтверждает только сервер, сохранивший заявку для почты. */
+  octRelay(data, file);
 
-  /* Заявка принята, если сработал хотя бы один канал: если почтовый сервис
-     ещё не поднят, но Telegram заявку получил — показывать ошибку не за что */
-  function deliver(promise) {
-    return promise.catch(function (e) {
-      if (relayed) return { ok: true, via: 'telegram' };
-      throw e;
-    });
-  }
+  if (!file) return post();
 
-  if (!file) return deliver(post());
-
-  return deliver(new Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     var reader = new FileReader();
     reader.onload = function () {
       data.resume = {
@@ -363,7 +355,7 @@ function sendLead(payload, file) {
     };
     reader.onerror = function () { reject(new Error('file read failed')); };
     reader.readAsDataURL(file);
-  }).then(post));
+  }).then(post);
 }
 
 /* ── Универсальное модальное окно ── */

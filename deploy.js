@@ -345,6 +345,8 @@ const STATIC_IGNORE_ALWAYS = new Set([
 
 // Skipped only at the project root (deploy/env/tooling/source files)
 const STATIC_IGNORE_ROOT = new Set([
+  "work",
+  "outputs",
   ".env",
   "_env",
   "dist",
