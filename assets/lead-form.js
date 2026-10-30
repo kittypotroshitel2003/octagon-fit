@@ -178,6 +178,13 @@ function octMaskPhone(e) {
   if (octPhoneValid(el.value)) octMarkError(el, false);
 }
 
+document.addEventListener('focusin', function (e) {
+  var form = e.target.closest && e.target.closest('form');
+  if (!form || form._octAnalyticsStarted) return;
+  form._octAnalyticsStarted = true;
+  octGoal('form_start');
+});
+
 document.addEventListener('input', octMaskPhone);
 document.addEventListener('focusin', function (e) {
   var el = e.target;
@@ -279,6 +286,7 @@ function octValidate(nameEl, phoneEl, consentEl, statusId) {
   } else {
     octSetStatus(statusId, '');
   }
+  if (!ok) octGoal('form_validation_error');
   return ok;
 }
 
@@ -646,6 +654,7 @@ function octOpenModal(mode, titleOverride, source, trainer) {
   octApplyPreset(titleOverride);
 
   document.getElementById('octModalOverlay').classList.add('open');
+  octGoal(octModalMode === 'job' ? 'form_open_job' : 'form_open');
   document.body.classList.add('oct-modal-open');
   document.body.style.overflow = 'hidden';
   document.documentElement.style.overflow = 'hidden';
@@ -857,6 +866,7 @@ function submitOctModal(e) {
   var consentEl = document.getElementById('octConsent');
   var btn = document.getElementById('octModalSubmit');
   if (!octValidate(nameEl, phoneEl, consentEl, 'octStatus')) return false;
+  octGoal('form_submit_attempt');
 
   var preset = octPreset();
   var file = octModalMode === 'job' ? document.getElementById('octFileInput').files[0] : null;
@@ -928,6 +938,7 @@ function submitJobsForm(e) {
   var consentEl = document.getElementById('jfConsent');
   var btn = form.querySelector('.job-modal-submit');
   if (!octValidate(nameEl, phoneEl, consentEl, 'jfStatus')) return false;
+  octGoal('form_submit_attempt');
 
   btn.classList.add('is-sending');
   octSetStatus('jfStatus', 'Отправляем…');
@@ -959,6 +970,7 @@ function submitCtaForm(e) {
   var consentEl = document.getElementById('ctaConsent');
   var btn = document.getElementById('ctaSubmit');
   if (!octValidate(nameEl, phoneEl, consentEl, 'ctaStatus')) return false;
+  octGoal('form_submit_attempt');
 
   btn.classList.add('is-sending');
   octSetStatus('ctaStatus', 'Отправляем…');
@@ -993,6 +1005,7 @@ function submitArtForm(e) {
   var consentEl = document.getElementById('artConsent');
   var btn = document.getElementById('artSubmit');
   if (!octValidate(nameEl, phoneEl, consentEl, 'artStatus')) return false;
+  octGoal('form_submit_attempt');
 
   btn.classList.add('is-sending');
   octSetStatus('artStatus', 'Отправляем…');
