@@ -29,7 +29,6 @@ window.OCT_METRIKA_ID = 72008407;
   })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
 
   ym(window.OCT_METRIKA_ID, "init", {
-    ssr: true,
     webvisor: true,
     clickmap: true,
     ecommerce: "dataLayer",
